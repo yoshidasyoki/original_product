@@ -128,17 +128,24 @@
 - 投資ファンドの選び方やNISA口座など、投資学習後の次のアクションに関する情報が乏しい
 - UI・UXがシンプルでわかりやすい（離脱しにくそう）
 
+[金融庁NISA特設サイト](https://www.fsa.go.jp/policy/nisa2/)
+
 ### SBI・楽天証券サイト
 - NISA口座の具体的な開設方法の説明が非常にわかりやすい
 - 投資シミュレーションは将来目指したい資産額から逆算して積立額を算出することもできる
 - 全体的に、投資に関する知識を持って「後は口座開設と商品を選ぶだけ！」という人が訪れるサイトの用意感じた
 - 投資やNISAに関する説明サイトもあるが、金融庁サイトと比較するとわかりにくい・見づらい印象（離脱しやすそう）
 
+[SBI証券 積立シミュレーション](https://go.sbisec.co.jp/prd/common/tsumitate_simulation.html?status=total&term=20&monthly=3&rate=2)  
+[SBI証券 NISA口座開設案内](https://www.sbisec.co.jp/ETGate/WPLETmgR001Control?OutSide=on&getFlg=on&burl=search_nisa&cat1=nisa&cat2=flow&dir=flow&file=nisa_flow.html)  
+
 ### ウェルスナビ
 - 自分に最適な投資スタイルを簡単に診断できる
 - UI・UXがシンプルでわかりやすい（離脱しにくそう）
+- 扱っている商品がマイナーなのがデメリット
 
-[ウェルスナビ公式ページ](https://www.wealthnavi.com/beginner)
+[ウェルスナビ公式ページ](https://www.wealthnavi.com/beginner)  
+[ウェルスナビ投資スタイル診断ページ](https://invest.wealthnavi.com/introduction/simulation/)  
 
 ## 7. 機能要件
 - 積立シミュレーション機能  
