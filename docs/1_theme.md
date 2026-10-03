@@ -14,7 +14,7 @@
 - 約4割が資産運用の知識不足
 - 3割弱が投資を行うことに不安を感じている
 
-ことが原因で投資に踏み切れていないという結果がある。
+ことが原因で投資に踏み切れていないという結果がある。  
 
 <p align="left">
   <img src="https://github.com/user-attachments/assets/c42cb83d-0eb2-44ac-b23c-a2398e41446e" width="600">
