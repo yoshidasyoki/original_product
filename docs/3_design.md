@@ -8,3 +8,7 @@
 
 ## 1. 業務フロー
 [draw.io 業務フロー設計](https://drive.google.com/file/d/1KR54UOAHl_92LCsP7ACdFzhFH4aLe1il/view?usp=sharing)
+
+※ デザインの参考になりそうなサイト
+[keeps](https://keeps.homes/)
+[BelleClub](https://www.belleclub.jp/)
