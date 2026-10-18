@@ -9,6 +9,8 @@
 ## 1. 業務フロー
 [draw.io 業務フロー設計](https://drive.google.com/file/d/1KR54UOAHl_92LCsP7ACdFzhFH4aLe1il/view?usp=sharing)
 
-※ デザインの参考になりそうなサイト
-[keeps](https://keeps.homes/)
-[BelleClub](https://www.belleclub.jp/)
+※ デザインの参考になりそうなサイト  
+[keeps](https://keeps.homes/)  
+[BelleClub](https://www.belleclub.jp/)  
+[pal-system](https://www.pal-system.co.jp/koeteku/okome/)  
+[ソコスト](https://soco-st.com/category/money)  
