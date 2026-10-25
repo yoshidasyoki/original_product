@@ -8,6 +8,9 @@
 5. UI・UX設計（アプリデザイン） 
 
 ## 1. 画面遷移図・ワイヤフレーム
+Figmaを用いて実施。  
+プロトタイプモードで各画面画面への遷移を記述
+
 [Figma 画面遷移図](https://www.figma.com/design/Zyym1C7jcZUdOiFpux4ScC/NISA%E3%82%A2%E3%83%97%E3%83%AA?node-id=37-124&t=y3eO2zcC6E7Z1OXm-1)  
 
 ※ 使用予定の外部リンク
