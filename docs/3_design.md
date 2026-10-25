@@ -27,5 +27,3 @@
 - [金融庁 NISAの活用事例](https://www.fsa.go.jp/policy/nisa2/example/)
 - [金融庁 ライフプランシミュレーター](https://www.fsa.go.jp/policy/nisa2/lifeplan-simulator/)
 - [金融庁 つみたてシミュレーター](https://www.fsa.go.jp/policy/nisa2/tsumitate-simulator/)
-
-#### ステップ４：
