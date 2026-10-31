@@ -4,7 +4,7 @@
 1. 画面遷移図・ワイヤフレーム
 2. DB設計・テーブル定義書
 3. システム設計
-4. HTTPエンドポイント
+4. API設計
 5. UI・UX設計（アプリデザイン） 
 
 ## 1. 画面遷移図・ワイヤフレーム
@@ -98,6 +98,23 @@ Figmaを用いて実施。
 1. `investment_product_id`は`investment_products`テーブル`id`と外部キーの関係にある
 2. 使用されている`investment_product_id`がある場合、`investment_products`テーブルの該当idの削除・更新は許可しない  
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
+
+## 4. API設計
+#### ログイン
+
+URLパス：`api/login`  
+HTTPメソッド：`POST`
+
+以下のようなリクエストJSONを送ると認証を行う。
+```JSON
+{
+  "email": "user@example.com",
+  "password": "your_password"
+}
+```
+
+認証に成功するとステータスコード`200`を返す。  
+失敗の場合はステータスコード`401`を返す。
 
 ## 5. UI・UX設計
 ※ デザインの参考になりそうなサイト  
