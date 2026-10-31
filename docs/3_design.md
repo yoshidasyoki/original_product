@@ -2,7 +2,7 @@
 このセクションでは以下の項目について検討を行い、開発アプリの設計を行う。
 
 1. 画面遷移図・ワイヤフレーム
-2. DB設計・テーブル定義所
+2. DB設計・テーブル定義書
 3. システム設計
 4. HTTPエンドポイント
 5. UI・UX設計（アプリデザイン） 
@@ -23,6 +23,26 @@ Figmaを用いて実施。
 - [金融庁 ライフプランシミュレーター](https://www.fsa.go.jp/policy/nisa2/lifeplan-simulator/)
 - [金融庁 つみたてシミュレーター](https://www.fsa.go.jp/policy/nisa2/tsumitate-simulator/)
 
+## 2. DB設計・テーブル定義書
+### 論理設計
+<img width="485" height="302" alt="image" src="https://github.com/user-attachments/assets/e4adc210-5285-4bf1-b1b4-96a9c324353d" />
+
+### 物理設計
+<img width="533" height="334" alt="image" src="https://github.com/user-attachments/assets/e1bff194-58eb-44a1-9077-a43aca47825f" />
+
+### テーブル設計
+
+#### usersテーブル
+| カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
+| id               | INTEGER      |      | PRIMARY |                   | YES            |
+| program_id       | INTEGER      |      |         |                   |                |
+| season_number    | INTEGER      | YES  |         |                   |                |
+| episode_number   | INTEGER      | YES  |         |                   |                |
+| title            | VARCHAR(255) | YES  |         |                   |                |
+| description      | TEXT         | YES  | YES     |                   |                |
+| video_time       | TIME         |      |         |                   |                |
+| release_date     | DATE         |      |         | CURRENT_TIMESTAMP |                |
 
 ## 5. UI・UX設計
 ※ デザインの参考になりそうなサイト  
