@@ -28,21 +28,76 @@ Figmaを用いて実施。
 <img width="485" height="302" alt="image" src="https://github.com/user-attachments/assets/e4adc210-5285-4bf1-b1b4-96a9c324353d" />
 
 ### 物理設計
-<img width="533" height="334" alt="image" src="https://github.com/user-attachments/assets/e1bff194-58eb-44a1-9077-a43aca47825f" />
+<img width="506" height="302" alt="image" src="https://github.com/user-attachments/assets/fb1a9d5b-5129-4504-9e7b-643d74754336" />
 
 ### テーブル設計
 
-#### usersテーブル
+#### 1. usersテーブル
 | カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
 | ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
 | id               | INTEGER      |      | PRIMARY |                   | YES            |
-| program_id       | INTEGER      |      |         |                   |                |
-| season_number    | INTEGER      | YES  |         |                   |                |
-| episode_number   | INTEGER      | YES  |         |                   |                |
-| title            | VARCHAR(255) | YES  |         |                   |                |
-| description      | TEXT         | YES  | YES     |                   |                |
-| video_time       | TIME         |      |         |                   |                |
-| release_date     | DATE         |      |         | CURRENT_TIMESTAMP |                |
+| name             | VARCHAR(50)  |      |         |                   |                |
+| email            | VARCHAR(100) |      |         |                   |                |
+| password         | VARCHAR(100) |      |         |                   |                |
+
+#### 2. user_curriculum_progressesテーブル
+| カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
+| id               | INTEGER      |      | PRIMARY |                   | YES            |
+| user_id          | VARCHAR(50)  |      | FOREIGN |                   |                |
+| content_name     | VARCHAR(100) |      |         |                   |                |
+| status           | VARCHAR(30)  |      |         | not_started       |                |
+
+※ 外部キー制約について
+1. `user_id`は`users`テーブル`id`と外部キーの関係にある
+2. `users`テーブルの特定ユーザで削除操作が行われた場合には本テーブルの該当ユーザ情報についても削除する  
+（`ON DELETE CASCADE`で外部キー制約を設定する）
+
+#### 3. household_ledgersテーブル
+| カラム名              | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
+| --------------------- | ------------ | ---- | ------- | ----------------- | -------------- |
+| id                    | INTEGER      |      | PRIMARY |                   | YES            |
+| user_id               | VARCHAR(50)  |      | FOREIGN |                   |                |
+| household_category_id | INTEGER      |      | FOREIGN |                   |                |
+| record_date           | DATETIME     |      |         |                   |                |
+| memo                  | VARCHAR(50)  | YES  |         |                   |                |
+| price                 | INTEGER      |      |         | 0                 |                |
+
+※ 外部キー制約について
+1. `user_id`は`users`テーブル`id`と外部キーの関係にある
+2. `users`テーブルの特定ユーザで削除操作が行われた場合には本テーブルの該当ユーザ情報についても削除する  
+（`ON DELETE CASCADE`で外部キー制約を設定する）
+3. `household_category_id`は`household_categories`テーブル`id`と外部キーの関係にある
+4. 使用されている`household_category_id`がある場合、`household_categories`テーブルの該当idの削除・更新は許可しない  
+（`NO ACTION`相当。MySQLのデフォルト設定とする）
+
+#### 4. household_categoriesテーブル
+| カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
+| id               | INTEGER      |      | PRIMARY |                   | YES            |
+| name             | VARCHAR(50)  |      |         |                   |                |
+| type             | VARCHAR(30)  |      |         |                   |                |
+
+#### 5. investment_productsテーブル
+| カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
+| id               | INTEGER      |      | PRIMARY |                   | YES            |
+| name             | VARCHAR(100) |      |         |                   |                |
+| type             | VARCHAR(30)  |      |         |                   |                |
+| unit             | VARCHAR(30)  |      |         |                   |                |
+
+#### 6. market_pricesテーブル
+| カラム名              | データ型       | NULL | キー    | 初期値             | AUTO INCREMENT |
+| --------------------- | -------------- | ---- | ------- | ----------------- | -------------- |
+| id                    | INTEGER        |      | PRIMARY |                   | YES            |
+| investment_product_id | INTEGER        |      | FOREIGN |                   |                |
+| price                 | DECIMAL(16, 2) |      |         |                   |                |
+| record_date           | DATETIME       |      |         |                   |                |
+
+※ 外部キー制約について
+1. `investment_product_id`は`investment_products`テーブル`id`と外部キーの関係にある
+2. 使用されている`investment_product_id`がある場合、`investment_products`テーブルの該当idの削除・更新は許可しない  
+（`NO ACTION`相当。MySQLのデフォルト設定とする）
 
 ## 5. UI・UX設計
 ※ デザインの参考になりそうなサイト  
