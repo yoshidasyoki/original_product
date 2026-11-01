@@ -162,7 +162,7 @@ HTTPメソッド：`GET`
 }
 ```
 
-### 登録
+#### 登録
 URLパス：`/api/household/transactions`  
 HTTPメソッド：`POST`  
 
@@ -189,7 +189,7 @@ HTTPメソッド：`POST`
 }
 ```
 
-### 編集
+#### 編集
 URLパス：`/api/household/transactions/1`  
 HTTPメソッド：`PUT`  
 
@@ -206,11 +206,78 @@ HTTPメソッド：`PUT`
 }
 ```
 
-### 削除
+#### 削除
 URLパス：`/api/household/transactions/1`  
 HTTPメソッド：`DELETE`  
 
 リクエストに対して処理に成功した場合はステータスコード`204`を返す。
+
+#### カテゴリ一覧取得
+- 支出カテゴリ
+URLパス：`/api/household/categories?type=expense`  
+HTTPメソッド：`GET`  
+
+リクエストを受けると以下のJSONを返す。  
+```JSON
+{
+  "type": "expense",
+  "data": [
+    {
+      "id": 1,
+      "name": "食費",
+      "icon": "utensils"
+    },
+    {
+      "id": 2,
+      "name": "日用品",
+      "icon": "shopping-bag"
+    },
+    {
+      "id": 3,
+      "name": "衣服",
+      "icon": "shirt"
+    },
+    {
+      "id": 4,
+      "name": "美容",
+      "icon": "scissors"
+    }
+  ]
+}
+```
+
+- 収入カテゴリ
+URLパス：`/api/household/categories?type=income`  
+HTTPメソッド：`GET`  
+
+リクエストを受けると以下のJSONを返す。
+```JSON
+{
+  "type": "income",
+  "data": [
+    {
+      "id": 14,
+      "name": "給料",
+      "icon": "briefcase"
+    },
+    {
+      "id": 15,
+      "name": "おこづかい",
+      "icon": "wallet"
+    },
+    {
+      "id": 16,
+      "name": "賞与",
+      "icon": "gift"
+    },
+    {
+      "id": 17,
+      "name": "その他",
+      "icon": "piggy-bank"
+    }
+  ]
+}
+```
 
 ## 5. UI・UX設計
 ※ デザインの参考になりそうなサイト  
