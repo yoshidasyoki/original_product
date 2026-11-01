@@ -101,10 +101,13 @@ Figmaを用いて実施。
 
 ## 4. API設計
 ### ログイン
-URLパス：`/api/login`  
-HTTPメソッド：`POST`  
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/login |
+| HTTPメソッド | POST |
+| 概要 | リクエストJSONから認証を行う | 
 
-以下のようなリクエストJSONを送ると認証を行う。
+レスポンス例
 ```JSON
 {
   "email": "user@example.com",
@@ -113,14 +116,17 @@ HTTPメソッド：`POST`
 ```
 
 認証に成功するとステータスコード`200`を返す。  
-失敗の場合はステータスコード`401`を返す。
+認証失敗の場合はステータスコード`401`を返す。
 
 ### アカウント関連
 #### ユーザ登録
-URLパス：`/api/user/register`
-HTTPメソッド：`POST`
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/register |
+| HTTPメソッド | POST |
+| 概要 | ユーザの新規登録を行う | 
 
-以下のようなリクエストJSONを送るとユーザ作成処理を行う。
+リクエスト例
 ```JSON
 {
   "name": "testuser",
@@ -130,7 +136,7 @@ HTTPメソッド：`POST`
 }
 ```
 
-処理に成功すると以下のJSONを返す。
+レスポンス例（201 OK）
 ```JSON
 {
   "message": "User registered successfully.",
@@ -143,10 +149,13 @@ HTTPメソッド：`POST`
 ```
 
 #### アカウント情報取得
-URLパス：`/api/me`
-HTTPメソッド：`GET`
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/me |
+| HTTPメソッド | GET |
+| 概要 | 現在ログイン中のユーザ情報を取得する | 
 
-現在ログインしているユーザの情報を以下JSONのように返す。
+レスポンス例（200 OK）
 ```JSON
 {
   "id": 1,
@@ -156,11 +165,15 @@ HTTPメソッド：`GET`
 ```
 
 #### アカウント情報更新
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/me |
+| HTTPメソッド | PUT |
+| 概要 | ユーザ情報（ユーザ名とメールアドレス）の更新を行う | 
 URLパス：`/api/me`
 HTTPメソッド：`PUT`
 
-ユーザ名とメールアドレスの変更を行う。  
-リクエスト例：
+リクエスト例
 ```JSON
 {
   "name": "新しいユーザー名",
@@ -179,10 +192,12 @@ HTTPメソッド：`PUT`
 ```
 
 #### パスワード変更
-URLパス：`/api/me/password`  
-HTTPメソッド：`PUT`
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/me/password |
+| HTTPメソッド | PUT |
+| 概要 | 現在のパスワード確認と新パスワードの設定を行う | 
 
-現在のパスワードを確認して新しいパスワードを設定する。  
 リクエスト例：
 ```JSON
 {
@@ -192,18 +207,15 @@ HTTPメソッド：`PUT`
 }
 ```
 
-レスポンス例：(200 OK)
-```JSON
-{
-  "message": "パスワードを変更しました"
-}
-```
+※ 処理に成功した場合はステータスコード`204 No Content`を返す
 
 #### 履修履歴取得
-URLパス：`/api/me/learning-progress`  
-HTTPメソッド：`GET`
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/me/learning-progress |
+| HTTPメソッド | GET |
+| 概要 | 履修状態を取得する | 
 
-4ステップの履修状態を取得する。  
 レスポンス例（200 OK）：
 ```JSON
 {
@@ -233,10 +245,12 @@ HTTPメソッド：`GET`
 ```
 
 #### 履修履歴編集
-URLパス：`/api/me/learning-progress`  
-HTTPメソッド：`PUT`
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/me/learning-progress |
+| HTTPメソッド | PUT |
+| 概要 | 履修ステータスの編集を行う | 
 
-履修ステータスの編集を行う。  
 リクエスト例：  
 ```JSON
 {
@@ -264,16 +278,36 @@ HTTPメソッド：`PUT`
 レスポンス例：（200 OK）
 ```JSON
 {
-  "message": "履修状態を更新しました"
+  "steps": [
+    {
+      "id": 1,
+      "is_completed": true
+    },
+    {
+      "id": 2,
+      "is_completed": true
+    },
+    {
+      "id": 3,
+      "is_completed": true
+    },
+    {
+      "id": 4,
+      "is_completed": false
+    }
+  ]
 }
 ```
 
 ### 家計簿機能
 #### 一覧取得
-URLパス：`/api/household/transactions`  
-HTTPメソッド：`GET`  
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/household/transactions |
+| HTTPメソッド | GET |
+| 概要 | 指定した月の家計簿データを取得する | 
 
-リクエストに対して以下のようなJSONを返す。
+レスポンス例（200 OK）
 ```JSON
 {
   "period": {
@@ -315,12 +349,13 @@ HTTPメソッド：`GET`
 ```
 
 #### 登録
-URLパス：`/api/household/transactions`  
-HTTPメソッド：`POST`  
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/household/transactions |
+| HTTPメソッド | POST |
+| 概要 | 家計簿の登録を行う | 
 
-以下のような形でリクエストを送る。  
-登録に成功するとステータスコード`201`を返す。
-
+リクエスト例
 ```JSON
 {
   "date": "2026-10-25",
@@ -331,6 +366,7 @@ HTTPメソッド：`POST`
 }
 ```
 
+レスポンス例（201 Created）
 ```JSON
 {
   "date": "2026-10-20",
@@ -342,12 +378,26 @@ HTTPメソッド：`POST`
 ```
 
 #### 編集
-URLパス：`/api/household/transactions/1`  
-HTTPメソッド：`PUT`  
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/household/transactions/1 |
+| HTTPメソッド | PUT |
+| 概要 | 指定した家計簿データの編集を行う | 
 
 以下のような形でリクエストを送る。  
 処理に成功した場合はステータスコード`204`を返す。
+リクエスト例
+```JSON
+{
+  "date": "2026-10-24",
+  "type": "expense",
+  "category_id": 1,
+  "memo": "イオンモール幕張",
+  "amount": 6000
+}
+```
 
+レスポンス例（200 OK）
 ```JSON
 {
   "date": "2026-10-24",
@@ -359,17 +409,24 @@ HTTPメソッド：`PUT`
 ```
 
 #### 削除
-URLパス：`/api/household/transactions/1`  
-HTTPメソッド：`DELETE`  
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/household/transactions/1 |
+| HTTPメソッド | DELETE |
+| 概要 | 指定した家計簿データの削除を行う | 
 
-リクエストに対して処理に成功した場合はステータスコード`204`を返す。
+※ 削除に成功した場合は`204 No Content`を返す
 
 #### カテゴリ一覧取得
 - 支出カテゴリ
-URLパス：`/api/household/categories?type=expense`  
-HTTPメソッド：`GET`  
 
-リクエストを受けると以下のJSONを返す。  
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/household/categories?type=expense |
+| HTTPメソッド | GET |
+| 概要 | DBに登録されている家計簿の収支カテゴリを取得する（家計簿登録画面のカテゴリ欄で使用する） | 
+
+レスポンス例（200 OK） 
 ```JSON
 {
   "type": "expense",
@@ -399,10 +456,14 @@ HTTPメソッド：`GET`
 ```
 
 - 収入カテゴリ
-URLパス：`/api/household/categories?type=income`  
-HTTPメソッド：`GET`  
 
-リクエストを受けると以下のJSONを返す。
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/household/categories?type=income |
+| HTTPメソッド | GET |
+| 概要 | DBに登録されている家計簿の収入カテゴリを取得する（家計簿登録画面のカテゴリ欄で使用する） | 
+
+レスポンス例（200 OK）
 ```JSON
 {
   "type": "income",
@@ -432,11 +493,14 @@ HTTPメソッド：`GET`
 ```
 
 ### リスクシミュレーション
-ULRパス：`/api/investment/risk-simulations`  
-HTTPメソッド：`GET`  
 
-以下のようなリクエストJSONを送りデータを取得する。
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/investment/risk-simulations |
+| HTTPメソッド | GET |
+| 概要 | 過去の指定した期間と積立投資額を入力すると、毎月の価額の変動と最終的な運用結果を取得する |
 
+リクエスト例
 ```JSON
 {
   "start_month": "2010-01",
@@ -446,8 +510,7 @@ HTTPメソッド：`GET`
 }
 ```
 
-データ取得に成功するといかのようなレスポンスJSONを返す。  
-※ 運用過程をグラフで可視化したいので1月ごとの価額も返す。
+レスポンス例（200 OK）
 ```JSON
 {
   "summary": {
