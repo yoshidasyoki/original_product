@@ -115,7 +115,8 @@ HTTPメソッド：`POST`
 認証に成功するとステータスコード`200`を返す。  
 失敗の場合はステータスコード`401`を返す。
 
-### ユーザ登録
+### アカウント関連
+#### ユーザ登録
 URLパス：`/api/user/register`
 HTTPメソッド：`POST`
 
@@ -138,6 +139,132 @@ HTTPメソッド：`POST`
     "name": "testuser",
     "email": "testuser@example.com"
   }
+}
+```
+
+#### アカウント情報取得
+URLパス：`/api/me`
+HTTPメソッド：`GET`
+
+現在ログインしているユーザの情報を以下JSONのように返す。
+```JSON
+{
+  "id": 1,
+  "name": "テストユーザー",
+  "email": "testuser@mail.com"
+}
+```
+
+#### アカウント情報更新
+URLパス：`/api/me`
+HTTPメソッド：`PUT`
+
+ユーザ名とメールアドレスの変更を行う。  
+リクエスト例：
+```JSON
+{
+  "name": "新しいユーザー名",
+  "email": "newuser@mail.com"
+  "password": "password"
+}
+```
+
+レスポンス例（200 OK）
+```JSON
+{
+  "id": 1,
+  "name": "新しいユーザー名",
+  "email": "newuser@mail.com"
+}
+```
+
+#### パスワード変更
+URLパス：`/api/me/password`  
+HTTPメソッド：`PUT`
+
+現在のパスワードを確認して新しいパスワードを設定する。  
+リクエスト例：
+```JSON
+{
+  "current_password": "oldPassword123",
+  "password": "newPassword456",
+  "password_confirmation": "newPassword456"
+}
+```
+
+レスポンス例：(200 OK)
+```JSON
+{
+  "message": "パスワードを変更しました"
+}
+```
+
+#### 履修履歴取得
+URLパス：`/api/me/learning-progress`  
+HTTPメソッド：`GET`
+
+4ステップの履修状態を取得する。  
+レスポンス例（200 OK）：
+```JSON
+{
+  "steps": [
+    {
+      "id": 1,
+      "title": "投資とNISAについての基礎を知る",
+      "is_completed": true
+    },
+    {
+      "id": 2,
+      "title": "投資可能額を把握する",
+      "is_completed": true
+    },
+    {
+      "id": 3,
+      "title": "シミュレーションで将来の資産を予測",
+      "is_completed": false
+    },
+    {
+      "id": 4,
+      "title": "NISA口座開設と商品選択",
+      "is_completed": false
+    }
+  ]
+}
+```
+
+#### 履修履歴編集
+URLパス：`/api/me/learning-progress`  
+HTTPメソッド：`PUT`
+
+履修ステータスの編集を行う。  
+リクエスト例：  
+```JSON
+{
+  "steps": [
+    {
+      "id": 1,
+      "is_completed": true
+    },
+    {
+      "id": 2,
+      "is_completed": true
+    },
+    {
+      "id": 3,
+      "is_completed": true
+    },
+    {
+      "id": 4,
+      "is_completed": false
+    }
+  ]
+}
+```
+
+レスポンス例：（200 OK）
+```JSON
+{
+  "message": "履修状態を更新しました"
 }
 ```
 
