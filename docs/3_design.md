@@ -100,10 +100,10 @@ Figmaを用いて実施。
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
 
 ## 4. API設計
-#### ログイン
+### ログイン
 
-URLパス：`api/login`  
-HTTPメソッド：`POST`
+URLパス：`/api/login`  
+HTTPメソッド：`POST`  
 
 以下のようなリクエストJSONを送ると認証を行う。
 ```JSON
@@ -116,9 +116,122 @@ HTTPメソッド：`POST`
 認証に成功するとステータスコード`200`を返す。  
 失敗の場合はステータスコード`401`を返す。
 
+### 家計簿機能
+#### 一覧取得
+URLパス：`/api/household/transactions`  
+HTTPメソッド：`GET`  
+
+リクエストに対して以下のようなJSONを返す。
+```JSON
+{
+  "period": {
+    "year": 2026,
+    "month": 10
+  },
+  "summary": {
+    "income": 180000,
+    "expense": 126600,
+    "balance": 53400
+  },
+  "transactions": [
+    {
+      "id": 1,
+      "date": "2026-10-24",
+      "type": "expense",
+      "category": "食費",
+      "memo": "イオンモール幕張",
+      "amount": 5415
+    },
+    {
+      "id": 2,
+      "date": "2026-10-20",
+      "type": "expense",
+      "category": "交際費",
+      "memo": "駅前の居酒屋",
+      "amount": 3300
+    },
+    {
+      "id": 3,
+      "date": "2026-10-08",
+      "type": "income",
+      "category": "給料",
+      "memo": "ボーナス",
+      "amount": 60000
+    }
+  ]
+}
+```
+
+### 登録
+URLパス：`/api/household/transactions`  
+HTTPメソッド：`POST`  
+
+以下のような形でリクエストを送る。  
+登録に成功するとステータスコード`201`を返す。
+
+```JSON
+{
+  "date": "2026-10-25",
+  "type": "expense",
+  "category_id": 1,
+  "memo": "スーパーで買い物",
+  "amount": 3500
+}
+```
+
+```JSON
+{
+  "date": "2026-10-20",
+  "type": "income",
+  "category_id": 6,
+  "memo": "給料",
+  "amount": 200000
+}
+```
+
+### 編集
+URLパス：`/api/household/transactions/1`  
+HTTPメソッド：`PUT`  
+
+以下のような形でリクエストを送る。  
+処理に成功した場合はステータスコード`204`を返す。
+
+```JSON
+{
+  "date": "2026-10-24",
+  "type": "expense",
+  "category_id": 1,
+  "memo": "イオンモール幕張",
+  "amount": 6000
+}
+```
+
+### 削除
+URLパス：`/api/household/transactions/1`  
+HTTPメソッド：`DELETE`  
+
+リクエストに対して処理に成功した場合はステータスコード`204`を返す。
+
 ## 5. UI・UX設計
 ※ デザインの参考になりそうなサイト  
 [keeps](https://keeps.homes/)  
 [BelleClub](https://www.belleclub.jp/)  
 [pal-system](https://www.pal-system.co.jp/koeteku/okome/)  
 [ソコスト](https://soco-st.com/category/money) 
+
+## その他
+### 損失シミュレーションについて
+積立投資の仕組みについて少し学習が必要。具体的には以下の内容で調査が必要。
+
+- 総資産の算出方法について
+指定した年月間で毎月積立を行った場合の、最終的な資産額の算出の仕方  
+→ ここは毎月の購入口数を計算、積立修了日の保有口数と価格をかければOK
+
+- 為替込みのシミュレーションについて
+為替相場も考慮したときどのような演算が必要になるかを調べる。  
+→ 当時の為替レートからドルに変換したのち口数を算出すればOK
+
+- 複利について
+複利演算の方法について調査する。  
+→ S&P500（Total Return）という複利込みの指数があるのでこちらを使用すれば演算不要。  
+[yahoo finance S&P500（Total Return）](https://finance.yahoo.com/quote/%5ESP500TR/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAB2RRD5xKrm5wDC1MGdsMI5UBxy1tBw1SGzFacAaooVYQM_L5zj7SaYBRRSmc09d7P3TQwjdP_8nG3faoC4cx4c19lgGTKIHZIBPfHA9p4mWCYyp9hFr-zeKXZduE7fdVV0vrgOaDLs7N3RjJQoAcX3YR6k2W4A2PXrjPaLO9-5r)
