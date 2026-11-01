@@ -101,7 +101,6 @@ Figmaを用いて実施。
 
 ## 4. API設計
 ### ログイン
-
 URLパス：`/api/login`  
 HTTPメソッド：`POST`  
 
@@ -115,6 +114,32 @@ HTTPメソッド：`POST`
 
 認証に成功するとステータスコード`200`を返す。  
 失敗の場合はステータスコード`401`を返す。
+
+### ユーザ登録
+URLパス：`/api/user/register`
+HTTPメソッド：`POST`
+
+以下のようなリクエストJSONを送るとユーザ作成処理を行う。
+```JSON
+{
+  "name": "testuser",
+  "email": "testuser@example.com",
+  "password": "password123",
+  "password_confirmation": "password123"
+}
+```
+
+処理に成功すると以下のJSONを返す。
+```JSON
+{
+  "message": "User registered successfully.",
+  "user": {
+    "id": 1,
+    "name": "testuser",
+    "email": "testuser@example.com"
+  }
+}
+```
 
 ### 家計簿機能
 #### 一覧取得
@@ -276,6 +301,58 @@ HTTPメソッド：`GET`
       "icon": "piggy-bank"
     }
   ]
+}
+```
+
+### リスクシミュレーション
+ULRパス：`/api/investment/risk-simulations`  
+HTTPメソッド：`GET`  
+
+以下のようなリクエストJSONを送りデータを取得する。
+
+```JSON
+{
+  "start_month": "2010-01",
+  "end_month": "2020-12",
+  "investment_index": "sp500",
+  "monthly_amount": 50000
+}
+```
+
+データ取得に成功するといかのようなレスポンスJSONを返す。  
+※ 運用過程をグラフで可視化したいので1月ごとの価額も返す。
+```JSON
+{
+  "summary": {
+    "principal": 6000000,
+    "asset_value": 7203837,
+    "profit": 1203837,
+    "return_rate": 20.06
+  },
+  "chart": [
+    {
+      "month": "2010-01",
+      "principal": 50000,
+      "asset_value": 50230
+    },
+    {
+      "month": "2010-02",
+      "principal": 100000,
+      "asset_value": 101250
+    },
+    {
+      "month": "2010-03",
+      "principal": 150000,
+      "asset_value": 153200
+    }
+  ],
+  "conditions": {
+    "investment_index": "sp500",
+    "start_month": "2010-01",
+    "end_month": "2020-12",
+    "monthly_amount": 50000,
+    "contribution_months": 132
+  }
 }
 ```
 
