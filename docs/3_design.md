@@ -99,6 +99,13 @@ Figmaを用いて実施。
 2. 使用されている`investment_product_id`がある場合、`investment_products`テーブルの該当idの削除・更新は許可しない  
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
 
+## 3. システム設計
+AWSインフラ設計について以下の構成を想定  
+- フロント部分はCloudFormationによる実装で検討
+- バックエンドはEC2サーバを1台or2台設置予定
+- DB部分はRDSを1台導入（コスト面から2台は厳しい）
+- ACMを用いてHTTPS化
+
 ## 4. API設計
 全体のAPI設計は以下の通り。
 
