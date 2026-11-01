@@ -638,7 +638,7 @@ AWSインフラ設計について以下の構成を想定
 [pal-system](https://www.pal-system.co.jp/koeteku/okome/)  
 [ソコスト](https://soco-st.com/category/money) 
 
-## その他
+## 6. その他
 ### 損失シミュレーションについて
 積立投資の仕組みについて少し学習が必要。具体的には以下の内容で調査が必要。
 
