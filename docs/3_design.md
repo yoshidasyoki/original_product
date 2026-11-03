@@ -212,7 +212,7 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
-レスポンス例（201 OK）
+レスポンス例（201 Created）
 ```JSON
 {
   "message": "User registered successfully.",
