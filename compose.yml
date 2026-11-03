@@ -1,0 +1,54 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src/backend:/var/www/html
+    depends_on:
+      - app
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./src/frontend:/app
+    tty: true
+    stdin_open: true
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+      args:
+        HOST_UID: ${HOST_UID}
+        HOST_GID: ${HOST_GID}
+    user: "${HOST_UID}:${HOST_GID}"
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./src/backend:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    env_file:
+      - docker/db/db_variables.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

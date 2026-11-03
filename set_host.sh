@@ -1,0 +1,4 @@
+export HOST_UID=$(id -u)
+export HOST_GID=$(id -g)
+
+echo 'The task is complete!'

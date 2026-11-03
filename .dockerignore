@@ -1,0 +1,19 @@
+# Git の管理情報
+.git
+**/.gitignore
+
+# 環境変数・秘密情報
+**/.env
+docker/db/db_variables.env
+
+# ホスト側でインストールした依存パッケージ
+**/node_modules
+**/vendor
+
+# ログ・OS の生成ファイル
+**/*.log
+
+# ビルドに使わない資料・起動設定
+docs
+compose.yml
+set_host.sh
