@@ -659,6 +659,6 @@ AWSインフラ設計について以下の構成を想定
 → 当時の為替レートからドルに変換したのち口数を算出すればOK
 
 - 複利について
-複利演算の方法について調査する。  
-→ S&P500（Total Return）という複利込みの指数があるのでこちらを使用すれば演算不要。  
+NISAでは配当金は受け取ることはできず、再投資される形で運用がなされる。この処理の演算方法を調べる。  
+→ S&P500（Total Return）という配当再投資込み指数がある。こちらを使用すれば特別な演算は不要なよう。  
 [yahoo finance S&P500（Total Return）](https://finance.yahoo.com/quote/%5ESP500TR/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAB2RRD5xKrm5wDC1MGdsMI5UBxy1tBw1SGzFacAaooVYQM_L5zj7SaYBRRSmc09d7P3TQwjdP_8nG3faoC4cx4c19lgGTKIHZIBPfHA9p4mWCYyp9hFr-zeKXZduE7fdVV0vrgOaDLs7N3RjJQoAcX3YR6k2W4A2PXrjPaLO9-5r)
