@@ -43,20 +43,20 @@ Figmaを用いて実施。
 
 ### テーブル定義書
 #### 1. usersテーブル
-| カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
-| id               | INTEGER      |      | PRIMARY |                   | YES            |
-| name             | VARCHAR(50)  |      |         |                   |                |
-| email            | VARCHAR(100) |      |         |                   |                |
-| password         | VARCHAR(100) |      |         |                   |                |
+| カラム名        | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ------------ | ------- | ------- | ----------------- | -------------- |
+| id               | INTEGER      | YES     | PRIMARY |                   | YES            |
+| name             | VARCHAR(50)  | YES     |         |                   |                |
+| email            | VARCHAR(100) | YES     |         |                   |                |
+| password         | VARCHAR(100) | YES     |         |                   |                |
 
 #### 2. learning_progressesテーブル
-| カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
-| id               | INTEGER      |      | PRIMARY |                   | YES            |
-| user_id          | INTEGER      |      | FOREIGN |                   |                |
-| name             | VARCHAR(100) |      |         |                   |                |
-| status           | VARCHAR(30)  |      |         | not_started       |                |
+| カラム名        | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ------------ | ------- | ------- | ----------------- | -------------- |
+| id               | INTEGER      | YES     | PRIMARY |                   | YES            |
+| user_id          | INTEGER      | YES     | FOREIGN |                   |                |
+| name             | VARCHAR(100) | YES     |         |                   |                |
+| status           | VARCHAR(30)  | YES     |         | not_started       |                |
 
 ※ 外部キー制約について
 1. `user_id`は`users.id`を参照する外部キー  
@@ -64,14 +64,14 @@ Figmaを用いて実施。
 （`ON DELETE CASCADE`で外部キー制約を設定する）
 
 #### 3. household_transactionsテーブル
-| カラム名              | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
-| --------------------- | ------------ | ---- | ------- | ----------------- | -------------- |
-| id                    | INTEGER      |      | PRIMARY |                   | YES            |
-| user_id               | INTEGER      |      | FOREIGN |                   |                |
-| household_category_id | INTEGER      |      | FOREIGN |                   |                |
-| record_date           | DATETIME     |      |         |                   |                |
-| memo                  | VARCHAR(50)  | YES  |         |                   |                |
-| amount                | INTEGER      |      |         | 0                 |                |
+| カラム名              | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| --------------------- | ------------ | ------- | ------- | ----------------- | -------------- |
+| id                    | INTEGER      | YES     | PRIMARY |                   | YES            |
+| user_id               | INTEGER      | YES     | FOREIGN |                   |                |
+| household_category_id | INTEGER      | YES     | FOREIGN |                   |                |
+| record_date           | DATETIME     | YES     |         |                   |                |
+| memo                  | VARCHAR(50)  |         |         |                   |                |
+| amount                | INTEGER      | YES     |         | 0                 |                |
 
 ※ 外部キー制約について
 1. `user_id`は`users.id`を参照する外部キー  
@@ -82,27 +82,27 @@ Figmaを用いて実施。
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
 
 #### 4. household_categoriesテーブル
-| カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
-| id               | INTEGER      |      | PRIMARY |                   | YES            |
-| name             | VARCHAR(50)  |      |         |                   |                |
-| type             | VARCHAR(30)  |      |         |                   |                |
+| カラム名        | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ------------ | ------- | ------- | ----------------- | -------------- |
+| id               | INTEGER      | YES     | PRIMARY |                   | YES            |
+| name             | VARCHAR(50)  | YES     |         |                   |                |
+| type             | VARCHAR(30)  | YES     |         |                   |                |
 
 #### 5. investment_productsテーブル
-| カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
-| id               | INTEGER      |      | PRIMARY |                   | YES            |
-| name             | VARCHAR(100) |      |         |                   |                |
-| type             | VARCHAR(30)  |      |         |                   |                |
-| unit             | VARCHAR(30)  |      |         |                   |                |
+| カラム名        | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ------------ | ------- | ------- | ----------------- | -------------- |
+| id               | INTEGER      | YES     | PRIMARY |                   | YES            |
+| name             | VARCHAR(100) | YES     |         |                   |                |
+| type             | VARCHAR(30)  | YES     |         |                   |                |
+| unit             | VARCHAR(30)  | YES     |         |                   |                |
 
 #### 6. market_pricesテーブル
-| カラム名              | データ型       | NULL | キー    | 初期値             | AUTO INCREMENT |
-| --------------------- | -------------- | ---- | ------- | ----------------- | -------------- |
-| id                    | INTEGER        |      | PRIMARY |                   | YES            |
-| investment_product_id | INTEGER        |      | FOREIGN |                   |                |
-| price                 | DECIMAL(16, 2) |      |         |                   |                |
-| record_date           | DATETIME       |      |         |                   |                |
+| カラム名              | データ型       | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| --------------------- | -------------- | -------- | ------- | ----------------- | -------------- |
+| id                    | INTEGER        | YES      | PRIMARY |                   | YES            |
+| investment_product_id | INTEGER        | YES      | FOREIGN |                   |                |
+| price                 | DECIMAL(16, 2) | YES      |         |                   |                |
+| record_date           | DATETIME       | YES      |         |                   |                |
 
 ※ 外部キー制約について
 1. `investment_product_id`は`investment_products.id`を参照する外部キー
