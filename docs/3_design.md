@@ -1,4 +1,4 @@
-# 設計
+<img width="552" height="333" alt="image" src="https://github.com/user-attachments/assets/82a47dba-fbaf-4491-8a24-3172f4bd6427" /># 設計
 このセクションでは以下の目次項目について検討を行い、開発アプリの設計を行う。
 
 ## 目次
@@ -35,10 +35,10 @@ Figmaを用いて実施。
 
 ## 2. DB設計・テーブル定義書
 ### 論理設計
-<img width="485" height="302" alt="image" src="https://github.com/user-attachments/assets/e4adc210-5285-4bf1-b1b4-96a9c324353d" />
+<img width="515" height="328" alt="image" src="https://github.com/user-attachments/assets/c5b6fe84-c010-4f4d-9785-ab908582e1ed" />
 
 ### 物理設計
-<img width="506" height="302" alt="image" src="https://github.com/user-attachments/assets/fb1a9d5b-5129-4504-9e7b-643d74754336" />
+<img width="552" height="333" alt="image" src="https://github.com/user-attachments/assets/80c7b439-1a9b-429e-a6d8-bbe4b24205c9" />
 
 ### テーブル定義書
 #### 1. usersテーブル
@@ -49,20 +49,20 @@ Figmaを用いて実施。
 | email            | VARCHAR(100) |      |         |                   |                |
 | password         | VARCHAR(100) |      |         |                   |                |
 
-#### 2. user_curriculum_progressesテーブル
+#### 2. learning_progressesテーブル
 | カラム名        | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
 | ------------     | ------------ | ---- | ------- | ----------------- | -------------- |
 | id               | INTEGER      |      | PRIMARY |                   | YES            |
 | user_id          | INTEGER      |      | FOREIGN |                   |                |
-| content_name     | VARCHAR(100) |      |         |                   |                |
+| name             | VARCHAR(100) |      |         |                   |                |
 | status           | VARCHAR(30)  |      |         | not_started       |                |
 
 ※ 外部キー制約について
-1. `user_id`は`users`テーブル`id`と外部キーの関係にある
+1. `user_id`は`users.id`を参照する外部キー  
 2. `users`テーブルの特定ユーザで削除操作が行われた場合には本テーブルの該当ユーザ情報についても削除する  
 （`ON DELETE CASCADE`で外部キー制約を設定する）
 
-#### 3. household_ledgersテーブル
+#### 3. household_transactionsテーブル
 | カラム名              | データ型     | NULL | キー    | 初期値             | AUTO INCREMENT |
 | --------------------- | ------------ | ---- | ------- | ----------------- | -------------- |
 | id                    | INTEGER      |      | PRIMARY |                   | YES            |
@@ -70,13 +70,13 @@ Figmaを用いて実施。
 | household_category_id | INTEGER      |      | FOREIGN |                   |                |
 | record_date           | DATETIME     |      |         |                   |                |
 | memo                  | VARCHAR(50)  | YES  |         |                   |                |
-| price                 | INTEGER      |      |         | 0                 |                |
+| amount                | INTEGER      |      |         | 0                 |                |
 
 ※ 外部キー制約について
-1. `user_id`は`users`テーブル`id`と外部キーの関係にある
+1. `user_id`は`users.id`を参照する外部キー  
 2. `users`テーブルの特定ユーザで削除操作が行われた場合には本テーブルの該当ユーザ情報についても削除する  
 （`ON DELETE CASCADE`で外部キー制約を設定する）
-3. `household_category_id`は`household_categories`テーブル`id`と外部キーの関係にある
+3. `household_category_id`は`household_categories.id`を参照する外部キー
 4. 使用されている`household_category_id`がある場合、`household_categories`テーブルの該当idの削除・更新は許可しない  
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
 
@@ -104,7 +104,7 @@ Figmaを用いて実施。
 | record_date           | DATETIME       |      |         |                   |                |
 
 ※ 外部キー制約について
-1. `investment_product_id`は`investment_products`テーブル`id`と外部キーの関係にある
+1. `investment_product_id`は`investment_products.id`を参照する外部キー
 2. 使用されている`investment_product_id`がある場合、`investment_products`テーブルの該当idの削除・更新は許可しない  
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
 
@@ -138,10 +138,10 @@ AWSインフラ設計について以下の構成を想定
 | 項目 | URLパス | HTTPメソッド | 概要 |
 | ---- | ---- | ----- | ---- |
 | [家計簿一覧取得](#家計簿一覧取得) | /api/household/transactions | GET | 指定した月のログインユーザの家計簿データを一覧で取得する |
-| [家計簿登録](#家計簿登録) | /api/household/transactions | POST | 家計簿の記録を新規で登録する |
-| [家計簿閲覧](#家計簿閲覧) | /api/household/transactions/1 | GET | 指定の家計簿データを取得する |
-| [家計簿編集](#家計簿編集) | /api/household/transactions/1 | PUT | 指定の家計簿データを編集する |
-| [家計簿削除](#家計簿削除) | /api/household/transactions/1 | DELETE | 指定の家計簿データを削除する |
+| [収支明細の登録](#家計簿登録) | /api/household/transactions | POST | 家計簿の記録を新規で登録する |
+| [収支明細の閲覧](#家計簿閲覧) | /api/household/transactions/1 | GET | 指定の収支明細データを取得する |
+| [収支明細の編集](#家計簿編集) | /api/household/transactions/1 | PUT | 指定の収支明細データを編集する |
+| [収支明細の削除](#家計簿削除) | /api/household/transactions/1 | DELETE | 指定の収支明細データを削除する |
 | [家計簿支出カテゴリ一覧取得](#家計簿支出カテゴリ一覧取得) | /api/household/categories?type=expense | GET | DBに登録されている家計簿の支出カテゴリを取得する |
 | [家計簿収入カテゴリ一覧取得](#家計簿収入カテゴリ一覧取得) | /api/household/categories?type=income | GET | DBに登録されている家計簿の収入カテゴリを取得する |
 
@@ -200,7 +200,7 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
-※ ゲスト状態でログアウトのリクエストを受けた場合も上記の成功レスポンスを返すものとする。  
+※ 未ログイン状態でログアウトのリクエストを受けた場合も上記の成功レスポンスを返すものとする。  
 （処理後にログアウト状態にするというこの処理の目的は達成されているため）
 
 #### ユーザ登録
@@ -243,7 +243,7 @@ AWSインフラ設計について以下の構成を想定
 ```JSON
 {
   "id": 1,
-  "name": "テストユーザー",
+  "name": "テストユーザ",
   "email": "testuser@mail.com"
 }
 ```
@@ -258,7 +258,7 @@ AWSインフラ設計について以下の構成を想定
 リクエスト例
 ```JSON
 {
-  "name": "新しいユーザー名",
+  "name": "新しいユーザ名",
   "email": "newuser@mail.com"
   "password": "password"
 }
@@ -268,7 +268,7 @@ AWSインフラ設計について以下の構成を想定
 ```JSON
 {
   "id": 1,
-  "name": "新しいユーザー名",
+  "name": "新しいユーザ名",
   "email": "newuser@mail.com"
 }
 ```
@@ -301,7 +301,7 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）：
 ```JSON
 {
-  "steps": [
+  "data": [
     {
       "id": 1,
       "title": "投資とNISAについての基礎を知る",
@@ -336,7 +336,7 @@ AWSインフラ設計について以下の構成を想定
 リクエスト例：  
 ```JSON
 {
-  "steps": [
+  "data": [
     {
       "id": 1,
       "is_completed": true
@@ -360,7 +360,7 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例：（200 OK）
 ```JSON
 {
-  "steps": [
+  "data": [
     {
       "id": 1,
       "is_completed": true
@@ -429,12 +429,12 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
-#### 家計簿登録
+#### 収支明細の登録
 | 項目 | 内容 |
 | ---- | ---- |
 | URLパス | /api/household/transactions |
 | HTTPメソッド | POST |
-| 概要 | 家計簿の登録を行う | 
+| 概要 | 収支明細の登録を行う | 
 
 リクエスト例
 ```JSON
@@ -458,12 +458,12 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
-#### 家計簿閲覧
+#### 収支明細の取得
 | 項目 | 内容 |
 | ---- | ---- |
 | URLパス | /api/household/transactions/1 |
 | HTTPメソッド | GET |
-| 概要 | 指定した家計簿データを取得する | 
+| 概要 | 指定した収支明細データを取得する | 
 
 レスポンス例（200 OK）
 ```JSON
@@ -476,12 +476,12 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
-#### 家計簿編集
+#### 収支明細の編集
 | 項目 | 内容 |
 | ---- | ---- |
 | URLパス | /api/household/transactions/1 |
 | HTTPメソッド | PUT |
-| 概要 | 指定した家計簿データの編集を行う | 
+| 概要 | 指定した収支明細データの編集を行う | 
 
 リクエスト例
 ```JSON
@@ -505,12 +505,12 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
-#### 家計簿削除
+#### 収支明細の削除
 | 項目 | 内容 |
 | ---- | ---- |
 | URLパス | /api/household/transactions/1 |
 | HTTPメソッド | DELETE |
-| 概要 | 指定した家計簿データの削除を行う | 
+| 概要 | 指定した収支明細データの削除を行う | 
 
 ※ 削除に成功した場合は`204 No Content`を返す
 
@@ -519,7 +519,7 @@ AWSインフラ設計について以下の構成を想定
 | ---- | ---- |
 | URLパス | /api/household/categories?type=expense |
 | HTTPメソッド | GET |
-| 概要 | DBに登録されている家計簿の収支カテゴリを取得する（家計簿登録画面のカテゴリ欄で使用する） | 
+| 概要 | DBに登録されている家計簿の支出カテゴリを取得する（家計簿登録画面のカテゴリ欄で使用する） | 
 
 レスポンス例（200 OK） 
 ```JSON
