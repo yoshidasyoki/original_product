@@ -1,4 +1,5 @@
 <img width="552" height="333" alt="image" src="https://github.com/user-attachments/assets/82a47dba-fbaf-4491-8a24-3172f4bd6427" /># 設計
+
 このセクションでは以下の目次項目について検討を行い、開発アプリの設計を行う。
 
 ## 目次
