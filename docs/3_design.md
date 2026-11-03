@@ -158,7 +158,7 @@ AWSインフラ設計について以下の構成を想定
 | HTTPメソッド | POST |
 | 概要 | リクエストJSONから認証を行う | 
 
-レスポンス例（200 OK）
+リクエスト例
 ```JSON
 {
   "email": "user@example.com",
