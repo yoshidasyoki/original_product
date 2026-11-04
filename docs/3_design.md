@@ -1,4 +1,4 @@
-<img width="552" height="333" alt="image" src="https://github.com/user-attachments/assets/82a47dba-fbaf-4491-8a24-3172f4bd6427" /># 設計
+# 設計
 
 このセクションでは以下の目次項目について検討を行い、開発アプリの設計を行う。
 
@@ -42,21 +42,29 @@ Figmaを用いて実施。
 <img width="552" height="333" alt="image" src="https://github.com/user-attachments/assets/80c7b439-1a9b-429e-a6d8-bbe4b24205c9" />
 
 ### テーブル定義書
+※ 文字コードはすべてMySQL8.4の標準である`utf8mb4`とする
+
 #### 1. usersテーブル
-| カラム名        | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ------------ | ------- | ------- | ----------------- | -------------- |
-| id               | INTEGER      | YES     | PRIMARY |                   | YES            |
-| name             | VARCHAR(50)  | YES     |         |                   |                |
-| email            | VARCHAR(100) | YES     |         |                   |                |
-| password         | VARCHAR(100) | YES     |         |                   |                |
+| カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
+| id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
+| name             | VARCHAR(50)      | YES     |         |                   |                |
+| email            | VARCHAR(255)     | YES     | UNIQUE  |                   |                |
+| password         | VARCHAR(100)     | YES     |         |                   |                |
+| created_at       | TIMESTAMP        | NO      |         |                   |                |
+| updated_at       | TIMESTAMP        | NO      |         |                   |                |
+
+※ `password`にはハッシュ値が入る
 
 #### 2. learning_progressesテーブル
-| カラム名        | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ------------ | ------- | ------- | ----------------- | -------------- |
-| id               | INTEGER      | YES     | PRIMARY |                   | YES            |
-| user_id          | INTEGER      | YES     | FOREIGN |                   |                |
-| name             | VARCHAR(100) | YES     |         |                   |                |
-| status           | VARCHAR(30)  | YES     |         | not_started       |                |
+| カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
+| id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
+| user_id          | BIGINT UNSIGNED  | YES     | FOREIGN |                   |                |
+| name             | VARCHAR(100)     | YES     |         |                   |                |
+| status           | VARCHAR(30)      | YES     |         | not_started       |                |
+| created_at       | TIMESTAMP        | NO      |         |                   |                |
+| updated_at       | TIMESTAMP        | NO      |         |                   |                |
 
 ※ 外部キー制約について
 1. `user_id`は`users.id`を参照する外部キー  
@@ -64,14 +72,16 @@ Figmaを用いて実施。
 （`ON DELETE CASCADE`で外部キー制約を設定する）
 
 #### 3. household_transactionsテーブル
-| カラム名              | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
-| --------------------- | ------------ | ------- | ------- | ----------------- | -------------- |
-| id                    | INTEGER      | YES     | PRIMARY |                   | YES            |
-| user_id               | INTEGER      | YES     | FOREIGN |                   |                |
-| household_category_id | INTEGER      | YES     | FOREIGN |                   |                |
-| record_date           | DATETIME     | YES     |         |                   |                |
-| memo                  | VARCHAR(50)  |         |         |                   |                |
-| amount                | INTEGER      | YES     |         | 0                 |                |
+| カラム名              | データ型         | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| --------------------- | ---------------- | ------- | ------- | ----------------- | -------------- |
+| id                    | BIGINT UNSIGNED　| YES     | PRIMARY |                   | YES            |
+| user_id               | BIGINT UNSIGNED  | YES     | FOREIGN |                   |                |
+| household_category_id | BIGINT UNSIGNED  | YES     | FOREIGN |                   |                |
+| record_date           | DATETIME         | YES     |         |                   |                |
+| memo                  | VARCHAR(50)      | NO      |         |                   |                |
+| amount                | INTEGER          | YES     |         | 0                 |                |
+| created_at            | TIMESTAMP        | NO      |         |                   |                |
+| updated_at            | TIMESTAMP        | NO      |         |                   |                |
 
 ※ 外部キー制約について
 1. `user_id`は`users.id`を参照する外部キー  
@@ -82,27 +92,33 @@ Figmaを用いて実施。
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
 
 #### 4. household_categoriesテーブル
-| カラム名        | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ------------ | ------- | ------- | ----------------- | -------------- |
-| id               | INTEGER      | YES     | PRIMARY |                   | YES            |
-| name             | VARCHAR(50)  | YES     |         |                   |                |
-| type             | VARCHAR(30)  | YES     |         |                   |                |
+| カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
+| id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
+| name             | VARCHAR(50)      | YES     |         |                   |                |
+| type             | VARCHAR(30)      | YES     |         |                   |                |
+| created_at       | TIMESTAMP        | NO      |         |                   |                |
+| updated_at       | TIMESTAMP        | NO      |         |                   |                |
 
 #### 5. investment_productsテーブル
-| カラム名        | データ型     | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ------------ | ------- | ------- | ----------------- | -------------- |
-| id               | INTEGER      | YES     | PRIMARY |                   | YES            |
-| name             | VARCHAR(100) | YES     |         |                   |                |
-| type             | VARCHAR(30)  | YES     |         |                   |                |
-| unit             | VARCHAR(30)  | YES     |         |                   |                |
+| カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
+| id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
+| name             | VARCHAR(100)     | YES     |         |                   |                |
+| type             | VARCHAR(30)      | YES     |         |                   |                |
+| unit             | VARCHAR(30)      | YES     |         |                   |                |
+| created_at       | TIMESTAMP        | NO      |         |                   |                |
+| updated_at       | TIMESTAMP        | NO      |         |                   |                |
 
 #### 6. market_pricesテーブル
-| カラム名              | データ型       | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
-| --------------------- | -------------- | -------- | ------- | ----------------- | -------------- |
-| id                    | INTEGER        | YES      | PRIMARY |                   | YES            |
-| investment_product_id | INTEGER        | YES      | FOREIGN |                   |                |
-| price                 | DECIMAL(16, 2) | YES      |         |                   |                |
-| record_date           | DATETIME       | YES      |         |                   |                |
+| カラム名              | データ型         | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
+| --------------------- | ---------------- | -------- | ------- | ----------------- | -------------- |
+| id                    | BIGINT UNSIGNED  | YES      | PRIMARY |                   | YES            |
+| investment_product_id | BIGINT UNSIGNED  | YES      | FOREIGN |                   |                |
+| price                 | DECIMAL(16, 2)   | YES      |         |                   |                |
+| record_date           | TIMESTAMP        | YES      |         |                   |                |
+| created_at            | TIMESTAMP        | NO       |         |                   |                |
+| updated_at            | TIMESTAMP        | NO       |         |                   |                |
 
 ※ 外部キー制約について
 1. `investment_product_id`は`investment_products.id`を参照する外部キー
