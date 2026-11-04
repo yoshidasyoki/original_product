@@ -39,7 +39,7 @@ Figmaを用いて実施。
 <img width="515" height="328" alt="image" src="https://github.com/user-attachments/assets/c5b6fe84-c010-4f4d-9785-ab908582e1ed" />
 
 ### 物理設計
-<img width="552" height="333" alt="image" src="https://github.com/user-attachments/assets/80c7b439-1a9b-429e-a6d8-bbe4b24205c9" />
+<img width="556" height="335" alt="image" src="https://github.com/user-attachments/assets/e127213d-a765-4db2-b93f-b7524ca0cd6e" />
 
 ### テーブル定義書
 ※ 文字コードはすべてMySQL8.4の標準である`utf8mb4`とする
@@ -56,22 +56,37 @@ Figmaを用いて実施。
 
 ※ `password`にはハッシュ値が入る
 
-#### 2. learning_progressesテーブル
-| カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
-| id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
-| user_id          | BIGINT UNSIGNED  | YES     | FOREIGN |                   |                |
-| name             | VARCHAR(100)     | YES     |         |                   |                |
-| status           | VARCHAR(30)      | YES     |         | not_started       |                |
-| created_at       | TIMESTAMP        | NO      |         |                   |                |
-| updated_at       | TIMESTAMP        | NO      |         |                   |                |
+#### 2. user_learning_progressesテーブル
+| カラム名          | データ型          | NOT NULL | キー            | 初期値             | AUTO INCREMENT |
+| ------------------ | ---------------- | ------- | ---------------- | ----------------- | -------------- |
+| id                 | BIGINT UNSIGNED  | YES     | PRIMARY          |                   | YES            |
+| user_id            | BIGINT UNSIGNED  | YES     | FOREIGN, UNIQUE  |                   |                |
+| curriculum_step_id | BIGINT UNSIGNED  | YES     | FOREIGN, UNIQUE  |                   |                |
+| status             | VARCHAR(30)      | YES     |                  | not_started       |                |
+| created_at         | TIMESTAMP        | NO      |                  |                   |                |
+| updated_at         | TIMESTAMP        | NO      |                  |                   |                |
+
+※ 一意制約について
+本テーブルでは`user_id`と`curriculum_step_id`を複合一意制約として定義する
 
 ※ 外部キー制約について
 1. `user_id`は`users.id`を参照する外部キー  
 2. `users`テーブルの特定ユーザで削除操作が行われた場合には本テーブルの該当ユーザ情報についても削除する  
 （`ON DELETE CASCADE`で外部キー制約を設定する）
 
-#### 3. household_transactionsテーブル
+#### 3. curriculum_stepsテーブル
+| カラム名        | データ型          | NOT NULL | キー          | 初期値             | AUTO INCREMENT |
+| ------------     | ---------------- | ------- | -------------- | ----------------- | -------------- |
+| id               | BIGINT UNSIGNED  | YES     | PRIMARY        |                   | YES            |
+| title            | VARCHAR(100)     | YES     |                |                   |                |
+| position         | BIGINT UNSIGNED  | YES     | UNIQUE, CHECK  |                   |                |
+| created_at       | TIMESTAMP        | NO      |                |                   |                |
+| updated_at       | TIMESTAMP        | NO      |                |                   |                |
+
+※ CHECK制約について
+0より大きい数字のみ保存を許可する
+
+#### 4. household_transactionsテーブル
 | カラム名              | データ型         | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
 | --------------------- | ---------------- | ------- | ------- | ----------------- | -------------- |
 | id                    | BIGINT UNSIGNED　| YES     | PRIMARY |                   | YES            |
@@ -79,9 +94,12 @@ Figmaを用いて実施。
 | household_category_id | BIGINT UNSIGNED  | YES     | FOREIGN |                   |                |
 | record_date           | DATETIME         | YES     |         |                   |                |
 | memo                  | VARCHAR(50)      | NO      |         |                   |                |
-| amount                | INTEGER          | YES     |         | 0                 |                |
+| amount                | INTEGER          | YES     | CHECK   |                   |                |
 | created_at            | TIMESTAMP        | NO      |         |                   |                |
 | updated_at            | TIMESTAMP        | NO      |         |                   |                |
+
+※ CHECK制約について
+0より大きい数字のみ保存を許可する
 
 ※ 外部キー制約について
 1. `user_id`は`users.id`を参照する外部キー  
@@ -91,7 +109,7 @@ Figmaを用いて実施。
 4. 使用されている`household_category_id`がある場合、`household_categories`テーブルの該当idの削除・更新は許可しない  
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
 
-#### 4. household_categoriesテーブル
+#### 5. household_categoriesテーブル
 | カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
 | ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
 | id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
@@ -100,7 +118,7 @@ Figmaを用いて実施。
 | created_at       | TIMESTAMP        | NO      |         |                   |                |
 | updated_at       | TIMESTAMP        | NO      |         |                   |                |
 
-#### 5. investment_productsテーブル
+#### 6. investment_productsテーブル
 | カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
 | ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
 | id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
@@ -110,7 +128,7 @@ Figmaを用いて実施。
 | created_at       | TIMESTAMP        | NO      |         |                   |                |
 | updated_at       | TIMESTAMP        | NO      |         |                   |                |
 
-#### 6. market_pricesテーブル
+#### 7. market_pricesテーブル
 | カラム名              | データ型         | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
 | --------------------- | ---------------- | -------- | ------- | ----------------- | -------------- |
 | id                    | BIGINT UNSIGNED  | YES      | PRIMARY |                   | YES            |
@@ -322,22 +340,22 @@ AWSインフラ設計について以下の構成を想定
     {
       "id": 1,
       "title": "投資とNISAについての基礎を知る",
-      "is_completed": true
+      "status": "completed"
     },
     {
       "id": 2,
       "title": "投資可能額を把握する",
-      "is_completed": true
+      "status": "completed"
     },
     {
       "id": 3,
       "title": "シミュレーションで将来の資産を予測",
-      "is_completed": false
+      "is_completed": "not_started"
     },
     {
       "id": 4,
       "title": "NISA口座開設と商品選択",
-      "is_completed": false
+      "is_completed": "not_started"
     }
   ]
 }
