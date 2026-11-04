@@ -138,14 +138,19 @@ Figmaを用いて実施。
 | updated_at       | TIMESTAMP        | NO      |         |                   |                |
 
 #### 7. market_pricesテーブル
-| カラム名              | データ型         | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
-| --------------------- | ---------------- | -------- | ------- | ----------------- | -------------- |
-| id                    | BIGINT UNSIGNED  | YES      | PRIMARY |                   | YES            |
-| investment_product_id | BIGINT UNSIGNED  | YES      | FOREIGN |                   |                |
-| price                 | DECIMAL(16, 2)   | YES      |         |                   |                |
-| record_date           | TIMESTAMP        | YES      |         |                   |                |
-| created_at            | TIMESTAMP        | NO       |         |                   |                |
-| updated_at            | TIMESTAMP        | NO       |         |                   |                |
+| カラム名              | データ型         | NOT NULL | キー            | 初期値             | AUTO INCREMENT |
+| --------------------- | ---------------- | -------- | --------------- | ----------------- | -------------- |
+| id                    | BIGINT UNSIGNED  | YES      | PRIMARY         |                   | YES            |
+| investment_product_id | BIGINT UNSIGNED  | YES      | FOREIGN, UNIQUE |                   |                |
+| value                 | DECIMAL(16, 2)   | YES      |                 |                   |                |
+| record_date           | DATE             | YES      | UNIQUE          |                   |                |
+| created_at            | TIMESTAMP        | NO       |                 |                   |                |
+| updated_at            | TIMESTAMP        | NO       |                 |                   |                |
+
+※ 月初終値を登録するものとする
+
+※ 一意制約について  
+`investment_product_id`と`record_date`の複合キーとする
 
 ※ 外部キー制約について
 1. `investment_product_id`は`investment_products.id`を参照する外部キー
@@ -706,3 +711,5 @@ AWSインフラ設計について以下の構成を想定
 NISAでは配当金は受け取ることはできず、再投資される形で運用がなされる。この処理の演算方法を調べる。  
 → S&P500（Total Return）という配当再投資込み指数がある。こちらを使用すれば特別な演算は不要なよう。  
 [yahoo finance S&P500（Total Return）](https://finance.yahoo.com/quote/%5ESP500TR/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAB2RRD5xKrm5wDC1MGdsMI5UBxy1tBw1SGzFacAaooVYQM_L5zj7SaYBRRSmc09d7P3TQwjdP_8nG3faoC4cx4c19lgGTKIHZIBPfHA9p4mWCYyp9hFr-zeKXZduE7fdVV0vrgOaDLs7N3RjJQoAcX3YR6k2W4A2PXrjPaLO9-5r)
+
+※ 為替換算は[Frankfurter API](https://frankfurter.dev/ja/?utm_source=chatgpt.com)を使用する  
