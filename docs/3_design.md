@@ -66,7 +66,7 @@ Figmaを用いて実施。
 | created_at         | TIMESTAMP        | NO      |                  |                   |                |
 | updated_at         | TIMESTAMP        | NO      |                  |                   |                |
 
-※ 一意制約について
+※ 一意制約について  
 本テーブルでは`user_id`と`curriculum_step_id`を複合一意制約として定義する
 
 ※ 外部キー制約について
@@ -83,7 +83,7 @@ Figmaを用いて実施。
 | created_at       | TIMESTAMP        | NO      |                |                   |                |
 | updated_at       | TIMESTAMP        | NO      |                |                   |                |
 
-※ CHECK制約について
+※ CHECK制約について  
 0より大きい数字のみ保存を許可する
 
 #### 4. household_transactionsテーブル
@@ -98,10 +98,10 @@ Figmaを用いて実施。
 | created_at            | TIMESTAMP        | NO      |         |                   |                |
 | updated_at            | TIMESTAMP        | NO      |         |                   |                |
 
-※ CHECK制約について
+※ CHECK制約について  
 0より大きい数字のみ保存を許可する
 
-※ 外部キー制約について
+※ 外部キー制約について  
 1. `user_id`は`users.id`を参照する外部キー  
 2. `users`テーブルの特定ユーザで削除操作が行われた場合には本テーブルの該当ユーザ情報についても削除する  
 （`ON DELETE CASCADE`で外部キー制約を設定する）
@@ -110,13 +110,22 @@ Figmaを用いて実施。
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
 
 #### 5. household_categoriesテーブル
-| カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
-| ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
-| id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
-| name             | VARCHAR(50)      | YES     |         |                   |                |
-| type             | VARCHAR(30)      | YES     |         |                   |                |
-| created_at       | TIMESTAMP        | NO      |         |                   |                |
-| updated_at       | TIMESTAMP        | NO      |         |                   |                |
+| カラム名        | データ型          | NOT NULL | キー        | 初期値             | AUTO INCREMENT |
+| ------------     | ---------------- | ------- | ------------ | ----------------- | -------------- |
+| id               | BIGINT UNSIGNED  | YES     | PRIMARY      |                   | YES            |
+| name             | VARCHAR(50)      | YES     | UNIQUE       |                   |                |
+| type             | VARCHAR(30)      | YES     | ENUM, UNIQUE |                   |                |
+| icon             | VARCHAR(50)      | YES     |              |                   |                |
+| created_at       | TIMESTAMP        | NO      |              |                   |                |
+| updated_at       | TIMESTAMP        | NO      |              |                   |                |
+
+※ ENUM制約について  
+`income`と`expense`の2値を登録する形とする
+
+※ UNIQUE制約について
+`name`と`type`の複合制約として定義する
+
+※ 今回はユーザがカテゴリを追加することは不可能とする
 
 #### 6. investment_productsテーブル
 | カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
