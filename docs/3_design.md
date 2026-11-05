@@ -436,6 +436,11 @@ AWSインフラ設計について以下の構成を想定
 | HTTPメソッド | GET |
 | 概要 | 指定した月の家計簿データを取得する | 
 
+リクエスト：  
+以下のようにクエリパラメータをつけて取得する年月を指定する。  
+2026年9月データを取得の場合 → `/api/household/transactions?month=2026-09`    
+※ クエリパラメータを省略した場合はアクセス時の月データを取得する
+
 レスポンス例（200 OK）
 ```JSON
 {
@@ -501,11 +506,16 @@ AWSインフラ設計について以下の構成を想定
 ```JSON
 {
   "data": {
-    "date": "2026-10-20",
-    "type": "income",
-    "category_id": 6,
-    "memo": "給料",
-    "amount": 200000
+    "id": 1,
+    "date": "2026-10-25",
+    "type": "expense",
+    "category": {
+      "id": 1,
+      "name": "食費",
+      "icon": "utensils"
+    },
+    "memo": "スーパーで買い物",
+    "amount": 3500
   }
 }
 ```
@@ -513,7 +523,7 @@ AWSインフラ設計について以下の構成を想定
 #### 収支明細の取得
 | 項目 | 内容 |
 | ---- | ---- |
-| URLパス | /api/household/transactions/1 |
+| URLパス | /api/household/transactions/{id} |
 | HTTPメソッド | GET |
 | 概要 | 指定した収支明細データを取得する | 
 
@@ -521,11 +531,16 @@ AWSインフラ設計について以下の構成を想定
 ```JSON
 {
   "data": {
-  "date": "2026-10-24",
-  "type": "expense",
-  "category_id": 1,
-  "memo": "イオンモール幕張",
-  "amount": 5600
+    "id": 1,
+    "date": "2026-10-24",
+    "type": "expense",
+    "category": {
+      "id": 1,
+      "name": "食費",
+      "icon": "utensils"
+    },
+    "memo": "イオンモール幕張",
+    "amount": 5600
   }
 }
 ```
@@ -533,7 +548,7 @@ AWSインフラ設計について以下の構成を想定
 #### 収支明細の編集
 | 項目 | 内容 |
 | ---- | ---- |
-| URLパス | /api/household/transactions/1 |
+| URLパス | /api/household/transactions/{id} |
 | HTTPメソッド | PUT |
 | 概要 | 指定した収支明細データの編集を行う | 
 
@@ -552,9 +567,14 @@ AWSインフラ設計について以下の構成を想定
 ```JSON
 {
   "data": {
+    "id": 1,
     "date": "2026-10-24",
     "type": "expense",
-    "category_id": 1,
+    "category": {
+      "id": 1,
+      "name": "食費",
+      "icon": "utensils"
+    },
     "memo": "イオンモール幕張",
     "amount": 6000
   }
@@ -564,7 +584,7 @@ AWSインフラ設計について以下の構成を想定
 #### 収支明細の削除
 | 項目 | 内容 |
 | ---- | ---- |
-| URLパス | /api/household/transactions/1 |
+| URLパス | /api/household/transactions/{id} |
 | HTTPメソッド | DELETE |
 | 概要 | 指定した収支明細データの削除を行う | 
 
@@ -580,29 +600,31 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK） 
 ```JSON
 {
-  "type": "expense",
-  "data": [
-    {
-      "id": 1,
-      "name": "食費",
-      "icon": "utensils"
-    },
-    {
-      "id": 2,
-      "name": "日用品",
-      "icon": "shopping-bag"
-    },
-    {
-      "id": 3,
-      "name": "衣服",
-      "icon": "shirt"
-    },
-    {
-      "id": 4,
-      "name": "美容",
-      "icon": "scissors"
-    }
-  ]
+  "data": {
+    "type": "expense",
+    "categories": [
+      {
+        "id": 1,
+        "name": "食費",
+        "icon": "utensils"
+      },
+      {
+        "id": 2,
+        "name": "日用品",
+        "icon": "shopping-bag"
+      },
+      {
+        "id": 3,
+        "name": "衣服",
+        "icon": "shirt"
+      },
+      {
+        "id": 4,
+        "name": "美容",
+        "icon": "scissors"
+      }
+    ]
+  }
 }
 ```
 
@@ -616,29 +638,31 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
-  "type": "income",
-  "data": [
-    {
-      "id": 14,
-      "name": "給料",
-      "icon": "briefcase"
-    },
-    {
-      "id": 15,
-      "name": "おこづかい",
-      "icon": "wallet"
-    },
-    {
-      "id": 16,
-      "name": "賞与",
-      "icon": "gift"
-    },
-    {
-      "id": 17,
-      "name": "その他",
-      "icon": "piggy-bank"
-    }
-  ]
+  "data": {
+    "type": "income",
+    "categories": [
+      {
+        "id": 14,
+        "name": "給料",
+        "icon": "briefcase"
+      },
+      {
+        "id": 15,
+        "name": "おこづかい",
+        "icon": "wallet"
+      },
+      {
+        "id": 16,
+        "name": "賞与",
+        "icon": "gift"
+      },
+      {
+        "id": 17,
+        "name": "その他",
+        "icon": "piggy-bank"
+      }
+    ]
+  }
 }
 ```
 
