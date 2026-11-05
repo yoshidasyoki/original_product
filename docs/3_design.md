@@ -218,22 +218,17 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
-    "email": "test@example.com",
-    "token": "eyJ0eXAiOi..."
+    "data": {
+        "email": "test@example.com",
+        "token": "eyJ0eXAiOi..."
+    }
 }
 ```
 
 レスポンスについて、  
 ・認証に成功するとステータスコード`200`を返す。  
 ・認証失敗の場合はステータスコード`401`を返す。  
-・ログイン中に再度ログインリクエストを受けた場合はステータスコード`409`を返す。  
-
-↓ ログイン中に再度ログインリクエストを受けた場合（409 Conflict）
-```JSON
-{
-  "message": "Already logged in"
-}
-```
+・ログイン中に再度ログインリクエストを受けた場合はセッションを再生成してログイン状態を保持する。
 
 #### ログアウト
 | 項目 | 内容 |
@@ -273,7 +268,7 @@ AWSインフラ設計について以下の構成を想定
 ```JSON
 {
   "message": "User registered successfully.",
-  "user": {
+  "data": {
     "id": 1,
     "name": "testuser",
     "email": "testuser@example.com"
@@ -291,9 +286,11 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
-  "id": 1,
-  "name": "テストユーザ",
-  "email": "testuser@mail.com"
+  "data": {
+    "id": 1,
+    "name": "テストユーザ",
+    "email": "testuser@mail.com"
+  }
 }
 ```
 
@@ -316,9 +313,11 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
-  "id": 1,
-  "name": "新しいユーザ名",
-  "email": "newuser@mail.com"
+  "data": {
+    "id": 1,
+    "name": "新しいユーザ名",
+    "email": "newuser@mail.com"
+  }
 }
 ```
 
@@ -364,12 +363,12 @@ AWSインフラ設計について以下の構成を想定
     {
       "id": 3,
       "title": "シミュレーションで将来の資産を予測",
-      "is_completed": "not_started"
+      "status": "not_started"
     },
     {
       "id": 4,
       "title": "NISA口座開設と商品選択",
-      "is_completed": "not_started"
+      "status": "not_started"
     }
   ]
 }
@@ -385,22 +384,22 @@ AWSインフラ設計について以下の構成を想定
 リクエスト例：  
 ```JSON
 {
-  "data": [
+  steps: [
     {
       "id": 1,
-      "is_completed": true
+      "status": "completed"
     },
     {
       "id": 2,
-      "is_completed": true
+      "status": "completed"
     },
     {
       "id": 3,
-      "is_completed": true
+      "status": "completed"
     },
     {
       "id": 4,
-      "is_completed": false
+      "status": "not_started"
     }
   ]
 }
@@ -412,19 +411,19 @@ AWSインフラ設計について以下の構成を想定
   "data": [
     {
       "id": 1,
-      "is_completed": true
+      "status": "completed"
     },
     {
       "id": 2,
-      "is_completed": true
+      "status": "completed"
     },
     {
       "id": 3,
-      "is_completed": true
+      "status": "completed"
     },
     {
       "id": 4,
-      "is_completed": false
+      "status": "completed"
     }
   ]
 }
@@ -440,41 +439,43 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
-  "period": {
-    "year": 2026,
-    "month": 10
-  },
-  "summary": {
-    "income": 180000,
-    "expense": 126600,
-    "balance": 53400
-  },
-  "transactions": [
-    {
-      "id": 1,
-      "date": "2026-10-24",
-      "type": "expense",
-      "category": "食費",
-      "memo": "イオンモール幕張",
-      "amount": 5415
+  "data": {
+    "period": {
+      "year": 2026,
+      "month": 10
     },
-    {
-      "id": 2,
-      "date": "2026-10-20",
-      "type": "expense",
-      "category": "交際費",
-      "memo": "駅前の居酒屋",
-      "amount": 3300
+    "summary": {
+      "income": 180000,
+      "expense": 126600,
+      "balance": 53400
     },
-    {
-      "id": 3,
-      "date": "2026-10-08",
-      "type": "income",
-      "category": "給料",
-      "memo": "ボーナス",
-      "amount": 60000
-    }
-  ]
+    "transactions": [
+      {
+        "id": 1,
+        "date": "2026-10-24",
+        "type": "expense",
+        "category": "食費",
+        "memo": "イオンモール幕張",
+        "amount": 5415
+      },
+      {
+        "id": 2,
+        "date": "2026-10-20",
+      "type": "expense",
+        "category": "交際費",
+        "memo": "駅前の居酒屋",
+        "amount": 3300
+      },
+      {
+        "id": 3,
+        "date": "2026-10-08",
+        "type": "income",
+        "category": "給料",
+        "memo": "ボーナス",
+        "amount": 60000
+      }
+    ]
+  }
 }
 ```
 
@@ -499,11 +500,13 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（201 Created）
 ```JSON
 {
-  "date": "2026-10-20",
-  "type": "income",
-  "category_id": 6,
-  "memo": "給料",
-  "amount": 200000
+  "data": {
+    "date": "2026-10-20",
+    "type": "income",
+    "category_id": 6,
+    "memo": "給料",
+    "amount": 200000
+  }
 }
 ```
 
@@ -517,11 +520,13 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
+  "data": {
   "date": "2026-10-24",
   "type": "expense",
   "category_id": 1,
   "memo": "イオンモール幕張",
   "amount": 5600
+  }
 }
 ```
 
@@ -546,11 +551,13 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
-  "date": "2026-10-24",
-  "type": "expense",
-  "category_id": 1,
-  "memo": "イオンモール幕張",
-  "amount": 6000
+  "data": {
+    "date": "2026-10-24",
+    "type": "expense",
+    "category_id": 1,
+    "memo": "イオンモール幕張",
+    "amount": 6000
+  }
 }
 ```
 
@@ -655,35 +662,37 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
-  "summary": {
-    "principal": 6000000,
-    "asset_value": 7203837,
-    "profit": 1203837,
-    "return_rate": 20.06
-  },
-  "chart": [
-    {
-      "month": "2010-01",
-      "principal": 50000,
-      "asset_value": 50230
+  "data": {
+    "summary": {
+      "principal": 6000000,
+      "asset_value": 7203837,
+      "profit": 1203837,
+      "return_rate": 20.06
     },
-    {
-      "month": "2010-02",
-      "principal": 100000,
-      "asset_value": 101250
-    },
-    {
-      "month": "2010-03",
-      "principal": 150000,
-      "asset_value": 153200
+    "chart": [
+      {
+        "month": "2010-01",
+        "principal": 50000,
+        "asset_value": 50230
+      },
+      {
+        "month": "2010-02",
+        "principal": 100000,
+        "asset_value": 101250
+      },
+      {
+        "month": "2010-03",
+        "principal": 150000,
+        "asset_value": 153200
+      }
+    ],
+    "conditions": {
+      "investment_index": "sp500",
+      "start_month": "2010-01",
+      "end_month": "2020-12",
+      "monthly_amount": 50000,
+      "contribution_months": 132
     }
-  ],
-  "conditions": {
-    "investment_index": "sp500",
-    "start_month": "2010-01",
-    "end_month": "2020-12",
-    "monthly_amount": 50000,
-    "contribution_months": 132
   }
 }
 ```
