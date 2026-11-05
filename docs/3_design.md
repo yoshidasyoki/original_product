@@ -61,7 +61,7 @@ Figmaを用いて実施。
 | ------------------ | ---------------- | ------- | ---------------- | ----------------- | -------------- |
 | id                 | BIGINT UNSIGNED  | YES     | PRIMARY          |                   | YES            |
 | user_id            | BIGINT UNSIGNED  | YES     | FOREIGN, UNIQUE  |                   |                |
-| curriculum_step_id | BIGINT UNSIGNED  | YES     | FOREIGN, UNIQUE  |                   |                |
+| curriculum_id      | BIGINT UNSIGNED  | YES     | FOREIGN, UNIQUE  |                   |                |
 | status             | VARCHAR(30)      | YES     |                  | not_started       |                |
 | created_at         | TIMESTAMP        | NO      |                  |                   |                |
 | updated_at         | TIMESTAMP        | NO      |                  |                   |                |
@@ -74,7 +74,7 @@ Figmaを用いて実施。
 2. `users`テーブルの特定ユーザで削除操作が行われた場合には本テーブルの該当ユーザ情報についても削除する  
 （`ON DELETE CASCADE`で外部キー制約を設定する）
 
-#### 3. curriculum_stepsテーブル
+#### 3. curriculumsテーブル
 | カラム名        | データ型          | NOT NULL | キー          | 初期値             | AUTO INCREMENT |
 | ------------     | ---------------- | ------- | -------------- | ----------------- | -------------- |
 | id               | BIGINT UNSIGNED  | YES     | PRIMARY        |                   | YES            |
@@ -180,17 +180,18 @@ AWSインフラ設計について以下の構成を想定
 | [ユーザ情報取得](#ユーザ情報取得) | /api/me | GET  | 現在ログインをしているユーザの情報を取得する |
 | [ユーザ情報変更](#ユーザ情報変更) | /api/me | PUT  | ログインユーザの名前とメールアドレスを変更する |
 | [パスワード変更](#パスワード変更) | /api/me/password | PUT | ログインユーザのパスワードを変更する |
-| [学習状況取得](#学習状況取得) | /api/me/learning-progress | GET | ログインユーザの学習の進捗状況を取得する |
-| [学習状況編集](#学習状況編集) | /api/me/learning-progress | PUT | ログインユーザの学習状況の編集を行う |
+| [学習状況取得](#学習状況取得) | /api/me/learning-progress/curriculums | GET | ログインユーザの学習の進捗状況を取得する |
+| [学習状況一括編集](#学習状況一括編集) | /api/me/learning-progress/curriculums | PUT | ログインユーザの学習進捗の編集を一括で行う |
+| [学習状況部分編集](#学習状況部分編集) | /api/me/learning-progress/curriculums | PUT | ログインユーザの特定のカリキュラムの進捗状況を編集する |
 
 ### 家計簿
 | 項目 | URLパス | HTTPメソッド | 概要 |
 | ---- | ---- | ----- | ---- |
 | [家計簿一覧取得](#家計簿一覧取得) | /api/household/transactions | GET | 指定した月のログインユーザの家計簿データを一覧で取得する |
 | [収支明細の登録](#家計簿登録) | /api/household/transactions | POST | 家計簿の記録を新規で登録する |
-| [収支明細の閲覧](#家計簿閲覧) | /api/household/transactions/1 | GET | 指定の収支明細データを取得する |
-| [収支明細の編集](#家計簿編集) | /api/household/transactions/1 | PUT | 指定の収支明細データを編集する |
-| [収支明細の削除](#家計簿削除) | /api/household/transactions/1 | DELETE | 指定の収支明細データを削除する |
+| [収支明細の閲覧](#家計簿閲覧) | /api/household/transactions/{id} | GET | 指定の収支明細データを取得する |
+| [収支明細の編集](#家計簿編集) | /api/household/transactions/{id} | PUT | 指定の収支明細データを編集する |
+| [収支明細の削除](#家計簿削除) | /api/household/transactions/{id} | DELETE | 指定の収支明細データを削除する |
 | [家計簿支出カテゴリ一覧取得](#家計簿支出カテゴリ一覧取得) | /api/household/categories?type=expense | GET | DBに登録されている家計簿の支出カテゴリを取得する |
 | [家計簿収入カテゴリ一覧取得](#家計簿収入カテゴリ一覧取得) | /api/household/categories?type=income | GET | DBに登録されている家計簿の収入カテゴリを取得する |
 
@@ -374,12 +375,12 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
-#### 学習状況編集
+#### 学習状況一括編集
 | 項目 | 内容 |
 | ---- | ---- |
-| URLパス | /api/me/learning-progress |
+| URLパス | /api/me/learning-progress/curriculums |
 | HTTPメソッド | PUT |
-| 概要 | 学習ステータスの編集を行う | 
+| 概要 | 学習ステータスの編集を一括で行う | 
 
 リクエスト例：  
 ```JSON
@@ -426,6 +427,30 @@ AWSインフラ設計について以下の構成を想定
       "status": "completed"
     }
   ]
+}
+```
+
+#### 学習状況部分編集
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/me/learning-progress/curriculums/{id} |
+| HTTPメソッド | PUT |
+| 概要 | 特定カリキュラムの学習ステータスの編集を行う | 
+
+リクエスト例：  
+```JSON
+{
+  "status" "completed"
+}
+```
+
+レスポンス例：（200 OK）
+```JSON
+{
+  "data": {
+    "id": 3,
+    "status": "completed"
+  }
 }
 ```
 
