@@ -203,11 +203,12 @@ AWSインフラ設計について以下の構成を想定
 ### エラーレスポンス
 | ステータスコード | 説明 |
 | ---- | ---- |
-| 401（Unauthorized） | 認証エラー |
-| 403（Forbidden） | 認可エラー |
-| 404（Not Found） | 存在しないページへのアクセス |
-| 405（Method Not Allowed） | 意図しないHTTPメソッドでのアクセス |
-| 422（） |  |
+| [401（Unauthorized）](#401Unauthorized) | 認証エラー |
+| [403（Forbidden）](#403Forbidden) | 認可エラー |
+| [404（Not Found）](#404NotFound) | 存在しないページへのアクセス |
+| [405（Method Not Allowed）](#405MethodNotAllowed) | 意図しないHTTPメソッドでのアクセス |
+| [422（Unprocessable Content）](#422UnprocessableContent) | バリデーションエラー |
+| [429（Too Many Requests）](#429TooManyRequests) | レートリミット（一定時間内のリクエスト回数制限） |
 
 ### ※ API設計詳細
 #### ログイン
@@ -394,7 +395,7 @@ AWSインフラ設計について以下の構成を想定
 リクエスト例：  
 ```JSON
 {
-  steps: [
+  "curriculums": [
     {
       "id": 1,
       "status": "completed"
@@ -754,37 +755,52 @@ AWSインフラ設計について以下の構成を想定
   }
 }
 ```
+### エラー時のレスポンス
 
-#### エラー時レスポンスについて
-- 400（Bad Request）：リクエスト不備
+#### 400（Bad Request）
+不正なリクエスト（JSON形式の文法的な間違い、必須ヘッダーの欠落など）を受け取った際に返す。  
+ステータスコードとエラーメッセージを返す。
+
 ```JSON
 {
   "message": "Invalid request."
 }
 ```
 
-- 401（Unauthorized）：認証エラー
+#### 401（Unauthorized）
+ログイン処理に対して失敗した際に返す。  
+ステータスコードとエラーメッセージを返す。
+
 ```JSON
 {
   "message": "Authentication required."
 }
 ```
 
-- 403（Forbidden）：認可エラー
+#### 403（Forbidden）
+許可されたユーザ以外のユーザがリソースに対してアクセスを行った際に返す。  
+ステータスコードとエラーメッセージを返す。
+
 ```JSON
 {
   "message": "You do not have permission to perform this action."
 }
 ```
 
-- 404（Not founded）
+#### 404（Not founded）
+存在しないページにアクセスした場合に返す。  
+ステータスコードとエラーメッセージを返す。
+
 ```JSON
 {
   "message": "The requested resource was not found."
 }
 ```
 
-- 422（Unprocessable Content）：バリデーションエラー
+#### 422（Unprocessable Content）
+入力値が指定した形と異なっていた場合に返す（バリデーションエラー）。  
+ステータスコードとエラーメッセージ、バリデーションエラーの内容（日本語）を返す。
+
 ```JSON
 {
   "message": "The provided data is invalid.",
@@ -793,7 +809,10 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
-- 429（Too Many Requests）：レートリミット
+#### 429（Too Many Requests）
+一定時間内にしきい値を超えるアクセスを受けた際に返す。  
+ステータスコードとエラーメッセージを返す。
+
 ```JSON
 {
   "message": "Too many requests. Please try again later."
