@@ -203,6 +203,7 @@ AWSインフラ設計について以下の構成を想定
 ### エラーレスポンス
 | ステータスコード | 説明 |
 | ---- | ---- |
+| [400（Bad Request）](#400BadRequest) | 不正なリクエスト |
 | [401（Unauthorized）](#401Unauthorized) | 認証エラー |
 | [403（Forbidden）](#403Forbidden) | 認可エラー |
 | [404（Not Found）](#404NotFound) | 存在しないページへのアクセス |
