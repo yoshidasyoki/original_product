@@ -219,6 +219,9 @@ AWSインフラ設計について以下の構成を想定
 | HTTPメソッド | POST |
 | 概要 | リクエストJSONから認証を行う | 
 
+当初は`JWT`によるトークン認証を考えたが、Laravel公式として`Sanctum`を推奨していること（セッション/トーク認証両対応、`CSRF`対策なども比較的容易）もあり最終的には`Sanctum`によるセッション認証を採用。  
+今回はWebアプリケーション向けAPIであるが、今後需要がある場合にはトークン認証方法も実装する。
+
 リクエスト例
 ```JSON
 {
@@ -230,10 +233,11 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
-    "data": {
-        "email": "test@example.com",
-        "token": "eyJ0eXAiOi..."
-    }
+  "message": "Login successful.",
+  "data": {
+    "id": 1,
+    "name": "Taro Yamada"
+  }
 }
 ```
 
@@ -325,6 +329,7 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
+  "message": "User created successfully.",
   "data": {
     "id": 1,
     "name": "新しいユーザ名",
@@ -420,6 +425,7 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例：（200 OK）
 ```JSON
 {
+  "message": "Learning status updated successfully.",
   "data": [
     {
       "id": 1,
@@ -458,6 +464,7 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例：（200 OK）
 ```JSON
 {
+  "message": "Learning status updated successfully.",
   "data": {
     "id": 3,
     "status": "completed"
@@ -541,6 +548,7 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（201 Created）
 ```JSON
 {
+  "message": "Household entry created successfully."
   "data": {
     "id": 1,
     "date": "2026-10-25",
