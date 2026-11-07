@@ -203,13 +203,13 @@ AWSインフラ設計について以下の構成を想定
 ### エラーレスポンス
 | ステータスコード | 説明 |
 | ---- | ---- |
-| [400（Bad Request）](#400BadRequest) | 不正なリクエスト |
-| [401（Unauthorized）](#401Unauthorized) | 認証エラー |
-| [403（Forbidden）](#403Forbidden) | 認可エラー |
-| [404（Not Found）](#404NotFound) | 存在しないページへのアクセス |
-| [405（Method Not Allowed）](#405MethodNotAllowed) | 意図しないHTTPメソッドでのアクセス |
-| [422（Unprocessable Content）](#422UnprocessableContent) | バリデーションエラー |
-| [429（Too Many Requests）](#429TooManyRequests) | レートリミット（一定時間内のリクエスト回数制限） |
+| [400（Bad Request）](#400bad-request) | 不正なリクエスト |
+| [401（Unauthorized）](#401unauthorized) | 認証エラー |
+| [403（Forbidden）](#403forbidden) | 認可エラー |
+| [404（Not Found）](#404not-found) | 存在しないページへのアクセス |
+| [405（Method Not Allowed）](#405method-not-allowed) | 意図しないHTTPメソッドでのアクセス |
+| [422（Unprocessable Content）](#422unprocessable-content) | バリデーションエラー |
+| [429（Too Many Requests）](#429too-many-requests) | レートリミット（一定時間内のリクエスト回数制限） |
 
 ### ※ API設計詳細
 #### ログイン
