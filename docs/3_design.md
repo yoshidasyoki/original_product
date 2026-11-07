@@ -200,6 +200,15 @@ AWSインフラ設計について以下の構成を想定
 | ---- | ---- | ----- | ---- |
 | [積立シミュレーション（過去実績）](#積立シミュレーション過去実績) | /api/investment/risk-simulations | POST | 暴落込みの値動きを過去の株価データをもと把握する |
 
+### エラーレスポンス
+| ステータスコード | 説明 |
+| ---- | ---- |
+| 401（Unauthorized） | 認証エラー |
+| 403（Forbidden） | 認可エラー |
+| 404（Not Found） | 存在しないページへのアクセス |
+| 405（Method Not Allowed） | 意図しないHTTPメソッドでのアクセス |
+| 422（） |  |
+
 ### ※ API設計詳細
 #### ログイン
 | 項目 | 内容 |
@@ -743,6 +752,51 @@ AWSインフラ設計について以下の構成を想定
       "contribution_months": 132
     }
   }
+}
+```
+
+#### エラー時レスポンスについて
+- 400（Bad Request）：リクエスト不備
+```JSON
+{
+  "message": "Invalid request."
+}
+```
+
+- 401（Unauthorized）：認証エラー
+```JSON
+{
+  "message": "Authentication required."
+}
+```
+
+- 403（Forbidden）：認可エラー
+```JSON
+{
+  "message": "You do not have permission to perform this action."
+}
+```
+
+- 404（Not founded）
+```JSON
+{
+  "message": "The requested resource was not found."
+}
+```
+
+- 422（Unprocessable Content）：バリデーションエラー
+```JSON
+{
+  "message": "The provided data is invalid.",
+  "errors": {
+    "password": "パスワードは8文字以上で設定してください"
+}
+```
+
+- 429（Too Many Requests）：レートリミット
+```JSON
+{
+  "message": "Too many requests. Please try again later."
 }
 ```
 
