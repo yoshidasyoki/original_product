@@ -39,7 +39,7 @@ Figmaを用いて実施。
 <img width="515" height="328" alt="image" src="https://github.com/user-attachments/assets/c5b6fe84-c010-4f4d-9785-ab908582e1ed" />
 
 ### 物理設計
-<img width="556" height="335" alt="image" src="https://github.com/user-attachments/assets/e127213d-a765-4db2-b93f-b7524ca0cd6e" />
+<img width="479" height="373" alt="image" src="https://github.com/user-attachments/assets/f1e61ba6-ff0b-439b-a7dd-7155ddd54348" />
 
 ### テーブル定義書
 ※ 文字コードはすべてMySQL8.4の標準である`utf8mb4`とする
