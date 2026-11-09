@@ -132,8 +132,8 @@ Figmaを用いて実施。
 | ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
 | id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
 | name             | VARCHAR(100)     | YES     |         |                   |                |
-| type             | VARCHAR(30)      | YES     |         |                   |                |
-| unit             | VARCHAR(30)      | YES     |         |                   |                |
+| kind             | VARCHAR(30)      | YES     |         |                   |                |
+| currency         | VARCHAR(30)      | YES     |         |                   |                |
 | created_at       | TIMESTAMP        | NO      |         |                   |                |
 | updated_at       | TIMESTAMP        | NO      |         |                   |                |
 
@@ -192,13 +192,14 @@ AWSインフラ設計について以下の構成を想定
 | [収支明細の閲覧](#家計簿閲覧) | /api/household/transactions/{id} | GET | 指定の収支明細データを取得する |
 | [収支明細の編集](#家計簿編集) | /api/household/transactions/{id} | PUT | 指定の収支明細データを編集する |
 | [収支明細の削除](#家計簿削除) | /api/household/transactions/{id} | DELETE | 指定の収支明細データを削除する |
-| [家計簿支出カテゴリ一覧取得](#家計簿支出カテゴリ一覧取得) | /api/household/categories?type=expense | GET | DBに登録されている家計簿の支出カテゴリを取得する |
+| [家計簿支出・収入カテゴリ一覧取得](#家計簿支出収入カテゴリ一覧取得) | /api/household/categories?type=expense|income | GET | DBに登録されている家計簿の支出カテゴリを取得する |
 | [家計簿収入カテゴリ一覧取得](#家計簿収入カテゴリ一覧取得) | /api/household/categories?type=income | GET | DBに登録されている家計簿の収入カテゴリを取得する |
 
 ### シミュレーション
 | 項目 | URLパス | HTTPメソッド | 概要 |
 | ---- | ---- | ----- | ---- |
 | [積立シミュレーション（過去実績）](#積立シミュレーション過去実績) | /api/investment/risk-simulations | POST | 暴落込みの値動きを過去の株価データをもと把握する |
+| [選択可能な情報の取得](#選択可能な情報の取得) | /api/investment/products | GET | 積立シミュレーション（過去実績）で選択できる指数・株価と期間を返す |
 
 ### エラーレスポンス
 | ステータスコード | 説明 |
@@ -502,25 +503,25 @@ AWSインフラ設計について以下の構成を想定
         "id": 1,
         "date": "2026-10-24",
         "type": "expense",
-        "category": "食費",
+        "category": {
+          "id": 1,
+          "name": "食費",
+          "icon": "utensils"
+        },
         "memo": "イオンモール幕張",
         "amount": 5415
       },
       {
         "id": 2,
         "date": "2026-10-20",
-      "type": "expense",
-        "category": "交際費",
+        "type": "expense",
+        "categories": {
+          "id": 14,
+          "name": "給料",
+          "icon": "briefcase"
+        },
         "memo": "駅前の居酒屋",
-        "amount": 3300
-      },
-      {
-        "id": 3,
-        "date": "2026-10-08",
-        "type": "income",
-        "category": "給料",
-        "memo": "ボーナス",
-        "amount": 60000
+        "amount": 200000
       }
     ]
   }
@@ -539,7 +540,7 @@ AWSインフラ設計について以下の構成を想定
 {
   "date": "2026-10-25",
   "type": "expense",
-  "category_id": 1,
+  "categoryId": 1,
   "memo": "スーパーで買い物",
   "amount": 3500
 }
@@ -601,7 +602,7 @@ AWSインフラ設計について以下の構成を想定
 {
   "date": "2026-10-24",
   "type": "expense",
-  "category_id": 1,
+  "categoryId": 1,
   "memo": "イオンモール幕張",
   "amount": 6000
 }
@@ -634,14 +635,14 @@ AWSインフラ設計について以下の構成を想定
 
 ※ 削除に成功した場合は`204 No Content`を返す
 
-#### 家計簿支出カテゴリ一覧取得
+#### 家計簿支出・収入カテゴリ一覧取得
 | 項目 | 内容 |
 | ---- | ---- |
-| URLパス | /api/household/categories?type=expense |
+| URLパス | /api/household/categories?type=expense|income |
 | HTTPメソッド | GET |
-| 概要 | DBに登録されている家計簿の支出カテゴリを取得する（家計簿登録画面のカテゴリ欄で使用する） | 
+| 概要 | DBに登録されている家計簿の支出・収入カテゴリを取得する（家計簿登録画面のカテゴリ欄で使用する） | 
 
-レスポンス例（200 OK） 
+`expense`レスポンス例（200 OK） 
 ```JSON
 {
   "data": {
@@ -672,14 +673,7 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
-#### 家計簿収入カテゴリ一覧取得
-| 項目 | 内容 |
-| ---- | ---- |
-| URLパス | /api/household/categories?type=income |
-| HTTPメソッド | GET |
-| 概要 | DBに登録されている家計簿の収入カテゴリを取得する（家計簿登録画面のカテゴリ欄で使用する） | 
-
-レスポンス例（200 OK）
+`income`レスポンス例（200 OK）
 ```JSON
 {
   "data": {
@@ -717,13 +711,16 @@ AWSインフラ設計について以下の構成を想定
 | HTTPメソッド | POST |
 | 概要 | 過去の指定した期間と積立投資額を入力すると、毎月の価額の変動と最終的な運用結果を取得する |
 
+※ リクエストの内容がやや長めなのでHTTPメソッドは`GET`ではなく`POST`を今回は使用。  
+またリクエスト内容に日本語が入るとクエリパラメータでエンコードが必要になりURLが分かりにくくなるのでそれを避ける目的もある。
+
 リクエスト例
 ```JSON
 {
-  "start_month": "2010-01",
-  "end_month": "2020-12",
-  "investment_index": "sp500",
-  "monthly_amount": 50000
+  "startMonth": "2010-01",
+  "endMonth": "2020-12",
+  "kind": "sp500",
+  "monthlyAmount": 50000
 }
 ```
 
@@ -733,37 +730,55 @@ AWSインフラ設計について以下の構成を想定
   "data": {
     "summary": {
       "principal": 6000000,
-      "asset_value": 7203837,
+      "assetValue": 7203837,
       "profit": 1203837,
-      "return_rate": 20.06
+      "returnRate": 20.06
     },
     "chart": [
       {
         "month": "2010-01",
         "principal": 50000,
-        "asset_value": 50230
+        "assetValue": 50230
       },
       {
         "month": "2010-02",
         "principal": 100000,
-        "asset_value": 101250
+        "assetValue": 101250
       },
       {
         "month": "2010-03",
         "principal": 150000,
-        "asset_value": 153200
+        "assetVvalue": 153200
       }
     ],
     "conditions": {
-      "investment_index": "sp500",
-      "start_month": "2010-01",
-      "end_month": "2020-12",
-      "monthly_amount": 50000,
-      "contribution_months": 132
+      "kind": "sp500",
+      "startMonth": "2010-01",
+      "endMonth": "2020-12",
+      "monthlyAmount": 50000,
+      "contributionMonths": 132
     }
   }
 }
 ```
+#### 選択可能な情報の取得
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/investment/products |
+| HTTPメソッド | GET |
+| 概要 | 積立シミュレーションで選択できる指数・株価と期間を返す |
+
+レスポンス例（200 OK）：
+```JSON
+{
+  "data": {
+     "kind": "sp500",
+     "startPeriod": "2010-01",
+     "endPeriod": "2026-11"
+  }
+}
+```
+
 ### エラー時のレスポンス
 
 #### 400（Bad Request）
