@@ -660,7 +660,7 @@ AWSインフラ設計について以下の構成を想定
 #### 家計簿支出・収入カテゴリ一覧取得
 | 項目 | 内容 |
 | ---- | ---- |
-| URLパス | /api/household/categories?type=expense|income |
+| URLパス | /api/household/categories?type=expense\|income |
 | HTTPメソッド | GET |
 | 概要 | DBに登録されている家計簿の支出・収入カテゴリを取得する（家計簿登録画面のカテゴリ欄で使用する） | 
 
