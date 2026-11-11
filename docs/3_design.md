@@ -57,7 +57,7 @@ Figmaを用いて実施。
 
 ※ `password`にはハッシュ値が入る
 
-#### 2. user_learning_progressesテーブル
+#### 2. user_learning_progressテーブル
 | カラム名          | データ型          | NOT NULL | キー            | 初期値             | AUTO INCREMENT |
 | ------------------ | ---------------- | ------- | ---------------- | ----------------- | -------------- |
 | id                 | BIGINT UNSIGNED  | YES     | PRIMARY          |                   | YES            |
