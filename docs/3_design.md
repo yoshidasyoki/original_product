@@ -228,7 +228,7 @@ AWSインフラ設計について以下の構成を想定
 リクエスト例
 ```JSON
 {
-  "email": "user@example.com",
+  "email": "testuser@example.com",
   "password": "your_password"
 }
 ```
@@ -239,7 +239,8 @@ AWSインフラ設計について以下の構成を想定
   "message": "Login successful.",
   "data": {
     "id": 1,
-    "name": "Taro Yamada"
+    "name": "testuser",
+    "email": "testuser@example.com"
   }
 }
 ```
