@@ -195,8 +195,7 @@ AWSインフラ設計について以下の構成を想定
 | [収支明細の閲覧](#家計簿閲覧) | /api/household/transactions/{id} | GET | 指定の収支明細データを取得する |
 | [収支明細の編集](#家計簿編集) | /api/household/transactions/{id} | PUT | 指定の収支明細データを編集する |
 | [収支明細の削除](#家計簿削除) | /api/household/transactions/{id} | DELETE | 指定の収支明細データを削除する |
-| [家計簿支出・収入カテゴリ一覧取得](#家計簿支出収入カテゴリ一覧取得) | /api/household/categories?type=expense|income | GET | DBに登録されている家計簿の支出カテゴリを取得する |
-| [家計簿収入カテゴリ一覧取得](#家計簿収入カテゴリ一覧取得) | /api/household/categories?type=income | GET | DBに登録されている家計簿の収入カテゴリを取得する |
+| [家計簿支出・収入カテゴリ一覧取得](#家計簿支出収入カテゴリ一覧取得) | /api/household/categories?type=expense\|income | GET | DBに登録されている家計簿の支出・収入カテゴリを取得する |
 
 ### シミュレーション
 | 項目 | URLパス | HTTPメソッド | 概要 |
