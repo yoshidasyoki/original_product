@@ -333,7 +333,7 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
-  "message": "User created successfully.",
+  "message": "User personal info updated successfully",
   "data": {
     "id": 1,
     "name": "新しいユーザ名",
