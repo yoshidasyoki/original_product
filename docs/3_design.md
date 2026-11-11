@@ -361,7 +361,7 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）：
 ```JSON
 {
-  "message": "Account deleted successfully."
+  "message": "Password updated successfully."
 }
 ```
 
