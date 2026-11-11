@@ -185,7 +185,7 @@ AWSインフラ設計について以下の構成を想定
 | [ユーザ退会](#ユーザ退会) | /api/me | DELETE | ユーザの退会（アカウント情報の削除）を行う |
 | [学習状況取得](#学習状況取得) | /api/me/learning-progress/curriculums | GET | ログインユーザの学習の進捗状況を取得する |
 | [学習状況一括編集](#学習状況一括編集) | /api/me/learning-progress/curriculums | PUT | ログインユーザの学習進捗の編集を一括で行う |
-| [学習状況部分編集](#学習状況部分編集) | /api/me/learning-progress/curriculums | PUT | ログインユーザの特定のカリキュラムの進捗状況を編集する |
+| [学習状況部分編集](#学習状況部分編集) | /api/me/learning-progress/curriculums/{id} | PUT | ログインユーザの特定のカリキュラムの進捗状況を編集する |
 
 ### 家計簿
 | 項目 | URLパス | HTTPメソッド | 概要 |
@@ -378,7 +378,7 @@ AWSインフラ設計について以下の構成を想定
 #### 学習状況取得
 | 項目 | 内容 |
 | ---- | ---- |
-| URLパス | /api/me/learning-progress |
+| URLパス | /api/me/learning-progress/curriculums |
 | HTTPメソッド | GET |
 | 概要 | 学習ステータスを取得する | 
 
@@ -398,7 +398,7 @@ AWSインフラ設計について以下の構成を想定
     },
     {
       "id": 3,
-      "title": "シミュレーションで将来の資産を予測",
+      "title": "投資シミュレーション",
       "status": "not_started"
     },
     {
@@ -448,18 +448,22 @@ AWSインフラ設計について以下の構成を想定
   "data": [
     {
       "id": 1,
+      "title": "投資とNISAについての基礎を知る",
       "status": "completed"
     },
     {
       "id": 2,
+      "title": "投資可能額を把握する",
       "status": "completed"
     },
     {
       "id": 3,
+      "title": "投資シミュレーション",
       "status": "completed"
     },
     {
       "id": 4,
+      "title": "NISA口座開設と商品選択",
       "status": "completed"
     }
   ]
@@ -486,6 +490,7 @@ AWSインフラ設計について以下の構成を想定
   "message": "Learning status updated successfully.",
   "data": {
     "id": 3,
+    "title": "投資シミュレーション",
     "status": "completed"
   }
 }
