@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MeController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -22,7 +23,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 // アカウント関連
 Route::post('/users', [UserController::class, 'store'])->middleware('guest:web');
-Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
-Route::put('/me', [UserController::class, 'update'])->middleware('auth:sanctum');
-Route::put('/me/password', [UserController::class, 'updatePassword'])->middleware('auth:sanctum');
-Route::delete('/me', [UserController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/me', [MeController::class, 'me'])->middleware('auth:sanctum');
+Route::put('/me', [MeController::class, 'update'])->middleware('auth:sanctum');
+Route::put('/me/password', [MeController::class, 'updatePassword'])->middleware('auth:sanctum');
+Route::delete('/me', [MeController::class, 'destroy'])->middleware('auth:sanctum');
