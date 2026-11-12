@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Me;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateInfoRequest;
 use App\Http\Requests\User\UpdatePasswordRequest;
 
-class MeController extends Controller
+class AccountController extends Controller
 {
     public function me(Request $request)
     {

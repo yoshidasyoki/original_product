@@ -7,7 +7,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\MeController;
+use App\Http\Controllers\Me\AccountController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -23,7 +23,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 // アカウント関連
 Route::post('/users', [UserController::class, 'store'])->middleware('guest:web');
-Route::get('/me', [MeController::class, 'me'])->middleware('auth:sanctum');
-Route::put('/me', [MeController::class, 'update'])->middleware('auth:sanctum');
-Route::put('/me/password', [MeController::class, 'updatePassword'])->middleware('auth:sanctum');
-Route::delete('/me', [MeController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/me', [AccountController::class, 'me'])->middleware('auth:sanctum');
+Route::put('/me', [AccountController::class, 'update'])->middleware('auth:sanctum');
+Route::put('/me/password', [AccountController::class, 'updatePassword'])->middleware('auth:sanctum');
+Route::delete('/me', [AccountController::class, 'destroy'])->middleware('auth:sanctum');
