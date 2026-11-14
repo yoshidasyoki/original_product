@@ -17,7 +17,8 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->foreignId('curriculum_id')->constrained('curriculums');
-            $table->string('status', 30)->default('not_started');
+            $table->enum('status', ['not_started', 'completed'])
+                ->default('not_started');
             $table->timestamps();
 
             $table->unique(['user_id', 'curriculum_id']);
