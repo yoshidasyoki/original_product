@@ -12,7 +12,7 @@ use App\Http\Requests\User\UpdatePasswordRequest;
 
 class AccountController extends Controller
 {
-    public function me(Request $request)
+    public function index(Request $request)
     {
         $user = $request->user();
         return response()->json([
