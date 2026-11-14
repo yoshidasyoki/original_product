@@ -640,6 +640,7 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）
 ```JSON
 {
+  'message' => 'Household entry updated successfully.',
   "data": {
     "id": 1,
     "date": "2026-10-24",
