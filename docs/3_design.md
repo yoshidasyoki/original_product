@@ -96,7 +96,7 @@ Figmaを用いて実施。
 | id                    | BIGINT UNSIGNED　| YES     | PRIMARY |                   | YES            |
 | user_id               | BIGINT UNSIGNED  | YES     | FOREIGN |                   |                |
 | household_category_id | BIGINT UNSIGNED  | YES     | FOREIGN |                   |                |
-| record_date           | DATETIME         | YES     |         |                   |                |
+| record_date           | DATE             | YES     |         |                   |                |
 | memo                  | VARCHAR(50)      | NO      |         |                   |                |
 | amount                | INTEGER          | YES     | CHECK   |                   |                |
 | created_at            | TIMESTAMP        | NO      |         |                   |                |
