@@ -63,12 +63,15 @@ Figmaを用いて実施。
 | id                 | BIGINT UNSIGNED  | YES     | PRIMARY          |                   | YES            |
 | user_id            | BIGINT UNSIGNED  | YES     | FOREIGN, UNIQUE  |                   |                |
 | curriculum_id      | BIGINT UNSIGNED  | YES     | FOREIGN, UNIQUE  |                   |                |
-| status             | VARCHAR(30)      | YES     |                  | not_started       |                |
+| status             | VARCHAR(30)      | YES     | ENUM             | not_started       |                |
 | created_at         | TIMESTAMP        | NO      |                  |                   |                |
 | updated_at         | TIMESTAMP        | NO      |                  |                   |                |
 
 ※ 一意制約について  
 本テーブルでは`user_id`と`curriculum_step_id`を複合一意制約として定義する
+
+※ ENUM制約について
+`not_started`と`completed`の2値を登録する形とする
 
 ※ 外部キー制約について
 1. `user_id`は`users.id`を参照する外部キー  
@@ -440,6 +443,9 @@ AWSインフラ設計について以下の構成を想定
 }
 ```
 
+> [!WARNING]
+> `status`へは`not_started`（未着手）、`completed`（完了）の2つを設定する。他のパラメータを格納した場合はエラーとして扱う。
+
 レスポンス例：（200 OK）
 ```JSON
 {
@@ -482,6 +488,9 @@ AWSインフラ設計について以下の構成を想定
   "status" "completed"
 }
 ```
+
+> [!WARNING]
+> `status`へは`not_started`（未着手）、`completed`（完了）の2つを設定する。他のパラメータを格納した場合はエラーとして扱う。
 
 レスポンス例：（200 OK）
 ```JSON
