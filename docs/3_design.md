@@ -194,10 +194,10 @@ AWSインフラ設計について以下の構成を想定
 | 項目 | URLパス | HTTPメソッド | 概要 |
 | ---- | ---- | ----- | ---- |
 | [家計簿一覧取得](#家計簿一覧取得) | /api/household/transactions | GET | 指定した月のログインユーザの家計簿データを一覧で取得する |
-| [収支明細の登録](#家計簿登録) | /api/household/transactions | POST | 家計簿の記録を新規で登録する |
-| [収支明細の閲覧](#家計簿閲覧) | /api/household/transactions/{id} | GET | 指定の収支明細データを取得する |
-| [収支明細の編集](#家計簿編集) | /api/household/transactions/{id} | PUT | 指定の収支明細データを編集する |
-| [収支明細の削除](#家計簿削除) | /api/household/transactions/{id} | DELETE | 指定の収支明細データを削除する |
+| [収支明細の登録](#収支明細の登録) | /api/household/transactions | POST | 家計簿の記録を新規で登録する |
+| [収支明細の閲覧](#収支明細の閲覧) | /api/household/transactions/{id} | GET | 指定の収支明細データを取得する |
+| [収支明細の編集](#収支明細の編集) | /api/household/transactions/{id} | PUT | 指定の収支明細データを編集する |
+| [収支明細の削除](#収支明細の削除) | /api/household/transactions/{id} | DELETE | 指定の収支明細データを削除する |
 | [家計簿支出・収入カテゴリ一覧取得](#家計簿支出収入カテゴリ一覧取得) | /api/household/categories?type=expense\|income | GET | DBに登録されている家計簿の支出・収入カテゴリを取得する |
 
 ### シミュレーション
