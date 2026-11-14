@@ -631,7 +631,6 @@ AWSインフラ設計について以下の構成を想定
 ```JSON
 {
   "date": "2026-10-24",
-  "type": "expense",
   "categoryId": 1,
   "memo": "イオンモール幕張",
   "amount": 6000
