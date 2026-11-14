@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 use App\Http\Requests\User\CreateRequest;
 
@@ -11,9 +12,9 @@ use App\Models\User;
 use App\Models\Curriculum;
 use App\Models\UserLearningProgress;
 
-class UserController extends Controller
+class UsersController extends Controller
 {
-    public function store(CreateRequest $request)
+    public function store(CreateRequest $request): JsonResponse
     {
         $user = DB::transaction(function () use ($request) {
             // ユーザ作成

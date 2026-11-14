@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Me;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateInfoRequest;
 use App\Http\Requests\User\UpdatePasswordRequest;
 
-class AccountController extends Controller
+class AccountsController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $user = $request->user();
         return response()->json([

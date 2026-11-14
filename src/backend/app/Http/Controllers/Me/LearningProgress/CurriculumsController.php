@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class CurriculumController extends Controller
+class CurriculumsController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
