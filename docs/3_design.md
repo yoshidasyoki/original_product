@@ -751,7 +751,8 @@ AWSインフラ設計について以下の構成を想定
   "startMonth": "2010-01",
   "endMonth": "2020-12",
   "kind": "sp500",
-  "monthlyAmount": 50000
+  "monthlyAmount": 50000,
+  "currency": "yen"
 }
 ```
 
@@ -763,6 +764,7 @@ AWSインフラ設計について以下の構成を想定
       "principal": 6000000,
       "assetValue": 7203837,
       "profit": 1203837,
+      "currency": "yen
       "returnRate": 20.06
     },
     "chart": [
