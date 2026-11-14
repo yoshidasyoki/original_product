@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateCurriculumRequest extends FormRequest
+class UpdateAllRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,18 @@ class UpdateCurriculumRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required', 'string', Rule::in(['completed', 'not_started'])],
+            'curriculums' => ['required', 'array', 'list', 'min:1'],
+            'curriculums.*' => ['required', 'array:id,status'],
+            'curriculums.*.id' => [
+                'required',
+                Rule::exists('user_learning_progress', 'curriculum_id')
+                    ->where('user_id', $this->user()->id),
+            ],
+            'curriculums.*.status' => [
+                'required',
+                'string',
+                Rule::in(['completed', 'not_started']),
+            ],
         ];
     }
 }

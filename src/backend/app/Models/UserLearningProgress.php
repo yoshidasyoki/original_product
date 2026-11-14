@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class UserLearningProgress extends Model
 {
     protected $table = 'user_learning_progress';
+
+    public function curriculum()
+    {
+        return $this->belongsTo(Curriculum::class);
+    }
 }

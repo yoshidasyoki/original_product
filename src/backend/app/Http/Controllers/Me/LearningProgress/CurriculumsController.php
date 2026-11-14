@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Me\LearningProgress;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LearningProgress\UpdateCurriculumRequest;
-use App\Http\Requests\LearningProgress\UpdateCurriculumsRequest;
+use App\Http\Requests\LearningProgress\UpdateOneRequest;
+use App\Http\Requests\LearningProgress\UpdateAllRequest;
 use App\Models\Curriculum;
 use App\Models\UserLearningProgress;
 use Illuminate\Http\JsonResponse;
@@ -15,34 +15,31 @@ class CurriculumsController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $curriculums =  Curriculum::query()
-            ->join(
-                'user_learning_progress',
-                'curriculums.id',
-                '=',
-                'user_learning_progress.curriculum_id'
-            )
-            ->where('user_learning_progress.user_id', $request->user()->id)
-            ->orderBy('curriculums.position')
-            ->get([
-                'curriculums.id',
-                'curriculums.title',
-                'user_learning_progress.status',
-            ]);
+        $result = UserLearningProgress::query()
+            ->with('curriculum')
+            ->where('user_id', $request->user()->id)
+            ->get()
+            ->map(function ($row) {
+                return [
+                    'id' => $row->curriculum->id,
+                    'title' => $row->curriculum->title,
+                    'status' => $row->status,
+                ];
+            });
 
         return response()->json([
-            'data' => $curriculums,
+            'data' => $result,
         ]);
     }
 
-    public function updateAll(UpdateCurriculumsRequest $request): JsonResponse
+    public function updateAll(UpdateAllRequest $request): JsonResponse
     {
         $form = $request->validated();
         $userId = $request->user()->id;
         $curriculumIds = array_column($form['curriculums'], 'id');
 
+        // 学習状況の更新処理
         DB::transaction(function () use ($form, $userId) {
-            // 各カリキュラムの学習状況を一括更新
             foreach ($form['curriculums'] as $curriculum) {
                 UserLearningProgress::query()
                     ->where('user_id', $userId)
@@ -53,23 +50,19 @@ class CurriculumsController extends Controller
             }
         });
 
-        // 更新後の学習状況をレスポンス用に取得
-        $result = Curriculum::query()
-            ->join(
-                'user_learning_progress',
-                'curriculums.id',
-                '=',
-                'user_learning_progress.curriculum_id'
-            )
-            ->where('user_learning_progress.user_id', $userId)
-            ->whereIn('curriculums.id', $curriculumIds)
-            ->orderBy('curriculums.position')
-            ->get([
-                'curriculums.id',
-                'curriculums.title',
-                'user_learning_progress.status',
-            ])
-            ->toArray();
+        // 更新後の学習状況を取得
+        $result = UserLearningProgress::query()
+            ->with('curriculum')
+            ->where('user_id', $userId)
+            ->whereIn('curriculum_id', $curriculumIds)
+            ->get()
+            ->map(function ($row) {
+                return [
+                    'id' => $row->curriculum->id,
+                    'title' => $row->curriculum->title,
+                    'status' => $row->status,
+                ];
+            });
 
         return response()->json([
             'message' => 'Learning status updated successfully.',
@@ -77,36 +70,30 @@ class CurriculumsController extends Controller
         ]);
     }
 
-    public function updateOne(UpdateCurriculumRequest $request, int $id): JsonResponse
+    public function updateOne(UpdateOneRequest $request, int $id): JsonResponse
     {
         $form = $request->validated();
         $userId = $request->user()->id;
 
-        UserLearningProgress::query()
+        // 更新対象を取得
+        $target = UserLearningProgress::query()
+            ->with('curriculum')
             ->where('user_id', $userId)
             ->where('curriculum_id', $id)
-            ->update([
-                'status' => $form['status'],
-            ]);
+            ->firstOrFail();
 
-        $result = Curriculum::query()
-            ->join(
-                'user_learning_progress',
-                'curriculums.id',
-                '=',
-                'user_learning_progress.curriculum_id'
-            )
-            ->where('user_learning_progress.user_id', $userId)
-            ->where('curriculums.id', $id)
-            ->firstOrFail([
-                'curriculums.id',
-                'curriculums.title',
-                'user_learning_progress.status',
-            ]);
+        // 学習ステータス更新
+        $target->update([
+            'status' => $form['status'],
+        ]);
 
         return response()->json([
             'message' => 'Learning status updated successfully.',
-            'data' => $result,
+            'data' => [
+                'id' => $target->curriculum->id,
+                'title' => $target->curriculum->title,
+                'status' => $target->status,
+            ],
         ]);
     }
 }
