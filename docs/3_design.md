@@ -37,10 +37,10 @@ Figmaを用いて実施。
 
 ## 2. DB設計・テーブル定義書
 ### 論理設計
-<img width="515" height="328" alt="image" src="https://github.com/user-attachments/assets/c5b6fe84-c010-4f4d-9785-ab908582e1ed" />
+<img width="398" height="392" alt="image" src="https://github.com/user-attachments/assets/a9c8c266-2af0-4d1d-8739-31c413356dde" />
 
 ### 物理設計
-<img width="479" height="373" alt="image" src="https://github.com/user-attachments/assets/f1e61ba6-ff0b-439b-a7dd-7155ddd54348" />
+<img width="427" height="388" alt="image" src="https://github.com/user-attachments/assets/e3f3b605-8013-4079-8cd8-2cbcfa071ade" />
 
 ### テーブル定義書
 ※ 文字コードはすべてMySQL8.4の標準である`utf8mb4`とする
@@ -147,6 +147,7 @@ Figmaを用いて実施。
 | id                    | BIGINT UNSIGNED  | YES      | PRIMARY         |                   | YES            |
 | investment_product_id | BIGINT UNSIGNED  | YES      | FOREIGN, UNIQUE |                   |                |
 | value                 | DECIMAL(16, 2)   | YES      |                 |                   |                |
+| exchange_rate_id      | BIGINT UNSIGNED  | YES      | FOREIGN         |                   |                |
 | record_date           | DATE             | YES      | UNIQUE          |                   |                |
 | created_at            | TIMESTAMP        | NO       |                 |                   |                |
 | updated_at            | TIMESTAMP        | NO       |                 |                   |                |
@@ -160,6 +161,23 @@ Figmaを用いて実施。
 1. `investment_product_id`は`investment_products.id`を参照する外部キー
 2. 使用されている`investment_product_id`がある場合、`investment_products`テーブルの該当idの削除・更新は許可しない  
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
+3. `exchange_rate_id`は`exchange_rates.id`を参照する外部キー
+4. 使用されている`exchange_rate_id`がある場合、`exchange_rates`テーブルの該当idの削除・更新は許可しない  
+（`NO ACTION`相当。MySQLのデフォルト設定とする）
+
+#### 8. exchange_ratesテーブル
+| カラム名              | データ型         | NOT NULL | キー            | 初期値             | AUTO INCREMENT |
+| --------------------- | ---------------- | -------- | --------------- | ----------------- | -------------- |
+| id                    | BIGINT UNSIGNED  | YES      | PRIMARY         |                   | YES            |
+| base_currency         | BIGINT UNSIGNED  | YES      | UNIQUE          |                   |                |
+| quote_currency        | BIGINT UNSIGNED  | YES      | UNIQUE          |                   |                |
+| rate                  | DECIMAL(16, 8)   | YES      |                 |                   |                |
+| record_date           | DATE             | YES      | UNIQUE          |                   |                |
+| created_at            | TIMESTAMP        | NO       |                 |                   |                |
+| updated_at            | TIMESTAMP        | NO       |                 |                   |                |
+
+※ 一意制約について
+`base_currency`、`quote_currency`、`record_date`の複合キーとする
 
 ## 3. システム設計
 AWSインフラ設計について以下の構成を想定  
