@@ -37,10 +37,10 @@ Figmaを用いて実施。
 
 ## 2. DB設計・テーブル定義書
 ### 論理設計
-<img width="407" height="381" alt="image" src="https://github.com/user-attachments/assets/81e8e4ee-ce74-4d62-b798-aa12ed84464d" />
+<img width="545" height="332" alt="image" src="https://github.com/user-attachments/assets/32d485b9-90d3-4da0-a793-82a3c8672a9b" />
 
 ### 物理設計
-<img width="444" height="384" alt="image" src="https://github.com/user-attachments/assets/e6a40dd5-7616-4cfb-ba09-1d2739b00b74" />
+<img width="559" height="332" alt="image" src="https://github.com/user-attachments/assets/f3e1cccd-adbf-4889-9d33-530c61fd530b" />
 
 ### テーブル定義書
 ※ 文字コードはすべてMySQL8.4の標準である`utf8mb4`とする
@@ -148,7 +148,6 @@ Figmaを用いて実施。
 | id                    | BIGINT UNSIGNED  | YES      | PRIMARY         |                   | YES            |
 | investment_product_id | BIGINT UNSIGNED  | YES      | FOREIGN, UNIQUE |                   |                |
 | value                 | DECIMAL(16, 2)   | YES      |                 |                   |                |
-| exchange_rate_id      | BIGINT UNSIGNED  | YES      | FOREIGN         |                   |                |
 | record_date           | DATE             | YES      | UNIQUE          |                   |                |
 | created_at            | TIMESTAMP        | NO       |                 |                   |                |
 | updated_at            | TIMESTAMP        | NO       |                 |                   |                |
@@ -161,9 +160,6 @@ Figmaを用いて実施。
 ※ 外部キー制約について
 1. `investment_product_id`は`investment_products.id`を参照する外部キー
 2. 使用されている`investment_product_id`がある場合、`investment_products`テーブルの該当idの削除・更新は許可しない  
-（`NO ACTION`相当。MySQLのデフォルト設定とする）
-3. `exchange_rate_id`は`exchange_rates.id`を参照する外部キー
-4. 使用されている`exchange_rate_id`がある場合、`exchange_rates`テーブルの該当idの削除・更新は許可しない  
 （`NO ACTION`相当。MySQLのデフォルト設定とする）
 
 #### 8. exchange_ratesテーブル
