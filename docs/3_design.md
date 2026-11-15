@@ -141,6 +141,8 @@ Figmaを用いて実施。
 | created_at       | TIMESTAMP        | NO      |         |                   |                |
 | updated_at       | TIMESTAMP        | NO      |         |                   |                |
 
+※ `currency`は通過情報の場合は`USD`、`JPY`などの国別通貨コード（ISO4217）を用いるものとする。
+
 #### 7. market_pricesテーブル
 | カラム名              | データ型         | NOT NULL | キー            | 初期値             | AUTO INCREMENT |
 | --------------------- | ---------------- | -------- | --------------- | ----------------- | -------------- |
@@ -169,12 +171,14 @@ Figmaを用いて実施。
 | カラム名              | データ型         | NOT NULL | キー            | 初期値             | AUTO INCREMENT |
 | --------------------- | ---------------- | -------- | --------------- | ----------------- | -------------- |
 | id                    | BIGINT UNSIGNED  | YES      | PRIMARY         |                   | YES            |
-| base_currency         | BIGINT UNSIGNED  | YES      | UNIQUE          |                   |                |
-| quote_currency        | BIGINT UNSIGNED  | YES      | UNIQUE          |                   |                |
+| base_currency         | VARCHAR(3）  | YES      | UNIQUE          |                   |                |
+| quote_currency        | VARCHAR(3)  | YES      | UNIQUE          |                   |                |
 | rate                  | DECIMAL(16, 8)   | YES      |                 |                   |                |
 | record_date           | DATE             | YES      | UNIQUE          |                   |                |
 | created_at            | TIMESTAMP        | NO       |                 |                   |                |
 | updated_at            | TIMESTAMP        | NO       |                 |                   |                |
+
+※ `base_currency`と`quote_currency`は国別通貨コード（ISO4217）に基き格納する。
 
 ※ 一意制約について
 `base_currency`、`quote_currency`、`record_date`の複合キーとする
