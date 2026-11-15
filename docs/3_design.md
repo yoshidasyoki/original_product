@@ -135,7 +135,7 @@ Figmaを用いて実施。
 | カラム名        | データ型          | NOT NULL | キー    | 初期値             | AUTO INCREMENT |
 | ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
 | id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
-| name             | VARCHAR(100)     | YES     |         |                   |                |
+| name             | VARCHAR(100)     | YES     | UNIQUE  |                   |                |
 | currency         | VARCHAR(10)      | YES     |         |                   |                |
 | created_at       | TIMESTAMP        | NO      |         |                   |                |
 | updated_at       | TIMESTAMP        | NO      |         |                   |                |
