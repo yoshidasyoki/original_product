@@ -37,10 +37,10 @@ Figmaを用いて実施。
 
 ## 2. DB設計・テーブル定義書
 ### 論理設計
-<img width="398" height="392" alt="image" src="https://github.com/user-attachments/assets/a9c8c266-2af0-4d1d-8739-31c413356dde" />
+<img width="407" height="381" alt="image" src="https://github.com/user-attachments/assets/81e8e4ee-ce74-4d62-b798-aa12ed84464d" />
 
 ### 物理設計
-<img width="427" height="388" alt="image" src="https://github.com/user-attachments/assets/e3f3b605-8013-4079-8cd8-2cbcfa071ade" />
+<img width="444" height="384" alt="image" src="https://github.com/user-attachments/assets/e6a40dd5-7616-4cfb-ba09-1d2739b00b74" />
 
 ### テーブル定義書
 ※ 文字コードはすべてMySQL8.4の標準である`utf8mb4`とする
@@ -136,7 +136,6 @@ Figmaを用いて実施。
 | ------------     | ---------------- | ------- | ------- | ----------------- | -------------- |
 | id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
 | name             | VARCHAR(100)     | YES     |         |                   |                |
-| kind             | VARCHAR(30)      | YES     |         |                   |                |
 | currency         | VARCHAR(10)      | YES     |         |                   |                |
 | created_at       | TIMESTAMP        | NO      |         |                   |                |
 | updated_at       | TIMESTAMP        | NO      |         |                   |                |
@@ -171,8 +170,8 @@ Figmaを用いて実施。
 | カラム名              | データ型         | NOT NULL | キー            | 初期値             | AUTO INCREMENT |
 | --------------------- | ---------------- | -------- | --------------- | ----------------- | -------------- |
 | id                    | BIGINT UNSIGNED  | YES      | PRIMARY         |                   | YES            |
-| base_currency         | VARCHAR(3）  | YES      | UNIQUE          |                   |                |
-| quote_currency        | VARCHAR(3)  | YES      | UNIQUE          |                   |                |
+| base_currency         | VARCHAR(3）      | YES      | UNIQUE          |                   |                |
+| quote_currency        | VARCHAR(3)       | YES      | UNIQUE          |                   |                |
 | rate                  | DECIMAL(16, 8)   | YES      |                 |                   |                |
 | record_date           | DATE             | YES      | UNIQUE          |                   |                |
 | created_at            | TIMESTAMP        | NO       |                 |                   |                |
