@@ -137,7 +137,7 @@ Figmaを用いて実施。
 | id               | BIGINT UNSIGNED  | YES     | PRIMARY |                   | YES            |
 | name             | VARCHAR(100)     | YES     |         |                   |                |
 | kind             | VARCHAR(30)      | YES     |         |                   |                |
-| currency         | VARCHAR(30)      | YES     |         |                   |                |
+| currency         | VARCHAR(10)      | YES     |         |                   |                |
 | created_at       | TIMESTAMP        | NO      |         |                   |                |
 | updated_at       | TIMESTAMP        | NO      |         |                   |                |
 
