@@ -147,7 +147,7 @@ Figmaを用いて実施。
 | --------------------- | ---------------- | -------- | --------------- | ----------------- | -------------- |
 | id                    | BIGINT UNSIGNED  | YES      | PRIMARY         |                   | YES            |
 | investment_product_id | BIGINT UNSIGNED  | YES      | FOREIGN, UNIQUE |                   |                |
-| value                 | DECIMAL(16, 2)   | YES      |                 |                   |                |
+| price                 | DECIMAL(16, 2)   | YES      |                 |                   |                |
 | record_date           | DATE             | YES      | UNIQUE          |                   |                |
 | created_at            | TIMESTAMP        | NO       |                 |                   |                |
 | updated_at            | TIMESTAMP        | NO       |                 |                   |                |
