@@ -767,7 +767,7 @@ AWSインフラ設計について以下の構成を想定
 {
   "startMonth": "2010-01",
   "endMonth": "2020-12",
-  "kind": "sp500",
+  "name": "sp500",
   "monthlyAmount": 50000,
   "currency": "JPY"
 }
@@ -802,7 +802,7 @@ AWSインフラ設計について以下の構成を想定
       }
     ],
     "conditions": {
-      "kind": "sp500",
+      "name": "sp500",
       "startMonth": "2010-01",
       "endMonth": "2020-12",
       "monthlyAmount": 50000,
@@ -822,7 +822,7 @@ AWSインフラ設計について以下の構成を想定
 ```JSON
 {
   "data": {
-     "kind": "sp500",
+     "name": "sp500",
      "startPeriod": "2010-01",
      "endPeriod": "2026-11"
   }
