@@ -168,7 +168,7 @@ Figmaを用いて実施。
 | id                    | BIGINT UNSIGNED  | YES      | PRIMARY         |                   | YES            |
 | base_currency         | VARCHAR(3）      | YES      | UNIQUE          |                   |                |
 | quote_currency        | VARCHAR(3)       | YES      | UNIQUE          |                   |                |
-| rate                  | DECIMAL(16, 6)   | YES      |                 |                   |                |
+| rate                  | DECIMAL(16, 2)   | YES      |                 |                   |                |
 | record_date           | DATE             | YES      | UNIQUE, INDEX   |                   |                |
 | created_at            | TIMESTAMP        | NO       |                 |                   |                |
 | updated_at            | TIMESTAMP        | NO       |                 |                   |                |
