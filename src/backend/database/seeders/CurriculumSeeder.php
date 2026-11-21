@@ -16,14 +16,20 @@ class CurriculumSeeder extends Seeder
     public function run(): void
     {
         $curriculums = [
-            ['title' => '積立投資とNISAの基礎理解', 'position' => 1],
-            ['title' => '投資可能額の把握', 'position' => 2],
-            ['title' => '投資シミュレーション', 'position' => 3],
-            ['title' => '口座開設と商品選択', 'position' => 4],
+            ['id' => 1, 'title' => '積立投資とNISAの基礎理解', 'position' => 1],
+            ['id' => 2, 'title' => '投資可能額の把握', 'position' => 2],
+            ['id' => 3, 'title' => '投資シミュレーション', 'position' => 3],
+            ['id' => 4, 'title' => '口座開設と商品選択', 'position' => 4],
         ];
 
         foreach ($curriculums as $curriculum) {
-            Curriculum::create($curriculum);
+            Curriculum::updateOrCreate(
+                ['id' => $curriculum['id']],
+                [
+                    'title' => $curriculum['title'],
+                    'position' => $curriculum['position'],
+                ],
+            );
         }
     }
 }

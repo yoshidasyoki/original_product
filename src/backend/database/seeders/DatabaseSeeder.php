@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CurriculumSeeder::class,
+            HouseholdCategorySeeder::class,
+            Sp500TRSeeder::class,
+            ExchangeRateSeeder::class,
         ]);
 
         // User::factory(10)->create();
