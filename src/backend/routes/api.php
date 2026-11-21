@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Household\CategoriesController;
-use App\Http\Controllers\Household\TransactionsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\Me\AccountsController;
 use App\Http\Controllers\Me\LearningProgress\CurriculumsController;
+use App\Http\Controllers\Household\CategoriesController;
+use App\Http\Controllers\Household\TransactionsController;
+use App\Http\Controllers\Investment\PastSimulationsController;
+use App\Http\Controllers\Investment\ProductsController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -47,3 +49,7 @@ Route::put('/me/learning-progress/curriculums', [CurriculumsController::class, '
 Route::patch('/me/learning-progress/curriculums/{id}', [CurriculumsController::class, 'updateOne'])
     ->whereNumber('id')
     ->middleware('auth:sanctum');
+
+// 積立シミュレーション（過去実績）
+Route::post('/investment/past-simulations/{product}', [PastSimulationsController::class, 'store']);
+Route::get('/investment/products', [ProductsController::class, 'index']);
