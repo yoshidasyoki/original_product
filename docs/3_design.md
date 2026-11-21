@@ -345,7 +345,7 @@ AWSインフラ設計について以下の構成を想定
 ```JSON
 {
   "name": "新しいユーザ名",
-  "email": "newuser@mail.com"
+  "email": "newuser@mail.com",
   "password": "password"
 }
 ```
