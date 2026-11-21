@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Me\LearningProgress;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\LearningProgress\UpdateOneRequest;
-use App\Http\Requests\LearningProgress\UpdateAllRequest;
-use App\Models\Curriculum;
-use App\Models\UserLearningProgress;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LearningProgress\UpdateOneRequest;
+use App\Http\Requests\LearningProgress\UpdateAllRequest;
+use App\Http\Resources\Me\LearningProgress\CurriculumsResource;
+
+use App\Models\Curriculum;
+use App\Models\UserLearningProgress;
 
 class CurriculumsController extends Controller
 {
@@ -18,17 +21,10 @@ class CurriculumsController extends Controller
         $result = UserLearningProgress::query()
             ->with('curriculum')
             ->where('user_id', $request->user()->id)
-            ->get()
-            ->map(function ($row) {
-                return [
-                    'id' => $row->curriculum->id,
-                    'title' => $row->curriculum->title,
-                    'status' => $row->status,
-                ];
-            });
+            ->get();
 
         return response()->json([
-            'data' => $result,
+            'data' => CurriculumsResource::collection($result),
         ]);
     }
 
@@ -55,18 +51,11 @@ class CurriculumsController extends Controller
             ->with('curriculum')
             ->where('user_id', $userId)
             ->whereIn('curriculum_id', $curriculumIds)
-            ->get()
-            ->map(function ($row) {
-                return [
-                    'id' => $row->curriculum->id,
-                    'title' => $row->curriculum->title,
-                    'status' => $row->status,
-                ];
-            });
+            ->get();
 
         return response()->json([
             'message' => 'Learning status updated successfully.',
-            'data' => $result,
+            'data' => CurriculumsResource::collection($result),
         ]);
     }
 
@@ -89,11 +78,7 @@ class CurriculumsController extends Controller
 
         return response()->json([
             'message' => 'Learning status updated successfully.',
-            'data' => [
-                'id' => $target->curriculum->id,
-                'title' => $target->curriculum->title,
-                'status' => $target->status,
-            ],
+            'data' => new CurriculumsResource($target),
         ]);
     }
 }

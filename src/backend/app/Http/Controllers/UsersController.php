@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 
 use App\Http\Requests\User\CreateRequest;
-
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Curriculum;
 use App\Models\UserLearningProgress;
@@ -39,11 +39,7 @@ class UsersController extends Controller
 
         return response()->json([
             'message' => 'User created successfully',
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-            ],
+            'user' => new UserResource($user),
         ], 201);
     }
 }

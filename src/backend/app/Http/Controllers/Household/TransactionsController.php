@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Household\Transactions\IndexRequest;
 use App\Http\Requests\Household\Transactions\SaveRequest;
+use App\Http\Resources\Household\TransactionResource;
 
 use App\Models\HouseholdTransaction;
 
@@ -31,21 +32,29 @@ class TransactionsController extends Controller
             ->orderByDesc('record_date')
             ->get();
 
-        $result = [];
-        foreach ($transactions as $transaction) {
-            $category = $transaction->householdCategory;
-            $result[] = [
-                'id' => $transaction->id,
-                'date' => $transaction->record_date,
-                'type' => $category->type,
-                'category' => $category->only(['id', 'name', 'icon']),
-                'memo' => $transaction->memo,
-                'amount' => $transaction->amount,
-            ];
-        }
+        $income = $transactions
+            ->where('householdCategory.type', 'income')
+            ->sum('amount');
+
+        $expense = $transactions
+            ->where('householdCategory.type', 'expense')
+            ->sum('amount');
+
+        $balance = $income - $expense;
 
         return response()->json([
-            'data' => $result,
+            'data' => [
+                'period' => [
+                    'year' => $date->year,
+                    'month' => $date->month,
+                ],
+                'summary' => [
+                    'income' => $income,
+                    'expense' => $expense,
+                    'balance' => $balance,
+                ],
+                'transactions' => TransactionResource::collection($transactions)
+            ]
         ]);
     }
 
@@ -60,35 +69,17 @@ class TransactionsController extends Controller
             'memo' => $form['memo'],
             'amount' => $form['amount'],
         ]);
-        $category = $transaction->householdCategory;
 
         return response()->json([
             'message' => 'Household entry created successfully.',
-            'data' => [
-                'id' => $transaction->id,
-                'date' => $transaction->record_date,
-                'type' => $category->type,
-                'category' => $category->only(['id', 'name', 'icon']),
-                'memo' => $transaction->memo,
-                'amount' => $transaction->amount,
-            ],
+            'data' => new TransactionResource($transaction),
         ], 201);
     }
 
-    public function show(Request $request, HouseholdTransaction $transaction): JsonResponse
+    public function show(HouseholdTransaction $transaction): JsonResponse
     {
-        $transaction->load('householdCategory');
-        $category = $transaction->householdCategory;
-
         return response()->json([
-            'data' => [
-                'id' => $transaction->id,
-                'date' => $transaction->record_date,
-                'type' => $category->type,
-                'category' => $category->only(['id', 'name', 'icon']),
-                'memo' => $transaction->memo,
-                'amount' => $transaction->amount,
-            ],
+            'data' => new TransactionResource($transaction),
         ]);
     }
 
@@ -102,22 +93,14 @@ class TransactionsController extends Controller
             'memo' => $form['memo'],
             'amount' => $form['amount'],
         ]);
-        $category = $transaction->householdCategory;
 
         return response()->json([
             'message' => 'Household entry updated successfully.',
-            'data' => [
-                'id' => $transaction->id,
-                'date' => $transaction->record_date,
-                'type' => $category->type,
-                'category' => $category->only(['id', 'name', 'icon']),
-                'memo' => $transaction->memo,
-                'amount' => $transaction->amount,
-            ],
+            'data' => new TransactionResource($transaction),
         ]);
     }
 
-    public function destroy(Request $request, HouseholdTransaction $transaction): JsonResponse
+    public function destroy(HouseholdTransaction $transaction): JsonResponse
     {
         $transaction->delete();
 

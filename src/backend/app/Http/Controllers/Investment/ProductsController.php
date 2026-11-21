@@ -10,9 +10,25 @@ class ProductsController extends Controller
 {
     public function index()
     {
-        $investmentProducts = InvestmentProduct::all(['id', 'name', 'currency']);
+        $products = InvestmentProduct::query()
+            ->join(
+                'market_prices',
+                'investment_products.id',
+                '=',
+                'market_prices.investment_product_id'
+            )
+            ->select(
+                'investment_products.id',
+                'name',
+                'currency'
+            )
+            ->selectRaw('MIN(market_prices.record_date) AS startDate')
+            ->selectRaw('MAX(market_prices.record_date) AS endDate')
+            ->groupBy('investment_products.id')
+            ->get();
+
         return response()->json([
-            'data' => $investmentProducts,
+            'data' => $products,
         ]);
     }
 }

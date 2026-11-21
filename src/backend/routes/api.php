@@ -51,5 +51,5 @@ Route::patch('/me/learning-progress/curriculums/{id}', [CurriculumsController::c
     ->middleware('auth:sanctum');
 
 // 積立シミュレーション（過去実績）
-Route::post('/investment/past-simulations/{product}', [PastSimulationsController::class, 'store']);
+Route::post('/investment/products/{product}/past-simulations/', [PastSimulationsController::class, 'simulate']);
 Route::get('/investment/products', [ProductsController::class, 'index']);
