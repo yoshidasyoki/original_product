@@ -220,8 +220,8 @@ AWSインフラ設計について以下の構成を想定
 ### シミュレーション
 | 項目 | URLパス | HTTPメソッド | 概要 |
 | ---- | ---- | ----- | ---- |
-| [積立シミュレーション（過去実績）](#積立シミュレーション過去実績) | /api/investment/past-simulations | POST | 暴落込みの値動きを過去の株価データをもと把握する |
 | [選択可能な情報の取得](#選択可能な情報の取得) | /api/investment/products | GET | 積立シミュレーション（過去実績）で選択できる指数・株価と期間を返す |
+| [積立シミュレーション（過去実績）](#積立シミュレーション過去実績) | /api/investment/products/{id}/past-simulations | POST | 暴落込みの値動きを過去の株価データをもと把握する |
 
 ### エラーレスポンス
 | ステータスコード | 説明 |
@@ -752,65 +752,6 @@ AWSインフラ設計について以下の構成を想定
 ```
 ※ クエリパラメータ`type`の部分を省略した場合は`expense`と`income`両方のデータを返す
 
-#### 積立シミュレーション（過去実績）
-| 項目 | 内容 |
-| ---- | ---- |
-| URLパス | /api/investment/past-simulations |
-| HTTPメソッド | POST |
-| 概要 | 過去の指定した期間と積立投資額を入力すると、毎月の価額の変動と最終的な運用結果を取得する |
-
-※ リクエストの内容がやや長めなのでHTTPメソッドは`GET`ではなく`POST`を今回は使用。  
-またリクエスト内容に日本語が入るとクエリパラメータでエンコードが必要になりURLが分かりにくくなるのでそれを避ける目的もある。
-
-リクエスト例
-```JSON
-{
-  "startMonth": "2010-01",
-  "endMonth": "2020-12",
-  "name": "sp500",
-  "monthlyAmount": 50000,
-  "currency": "JPY"
-}
-```
-
-レスポンス例（200 OK）
-```JSON
-{
-  "data": {
-    "summary": {
-      "principal": 6000000,
-      "assetValue": 7203837,
-      "profit": 1203837,
-      "currency": "JPY"
-      "returnRate": 20.06
-    },
-    "chart": [
-      {
-        "month": "2010-01",
-        "principal": 50000,
-        "assetValue": 50230
-      },
-      {
-        "month": "2010-02",
-        "principal": 100000,
-        "assetValue": 101250
-      },
-      {
-        "month": "2010-03",
-        "principal": 150000,
-        "assetVvalue": 153200
-      }
-    ],
-    "conditions": {
-      "name": "sp500",
-      "startMonth": "2010-01",
-      "endMonth": "2020-12",
-      "monthlyAmount": 50000,
-      "contributionMonths": 132
-    }
-  }
-}
-```
 #### 選択可能な情報の取得
 | 項目 | 内容 |
 | ---- | ---- |
@@ -821,11 +762,73 @@ AWSインフラ設計について以下の構成を想定
 レスポンス例（200 OK）：
 ```JSON
 {
-  "data": {
-     "name": "sp500",
-     "startPeriod": "2010-01",
-     "endPeriod": "2026-11"
-  }
+  "data": [
+    {
+      "id": 1,
+      "name": "sp500tr",
+      "currency": "USD",
+      "startPeriod": "2000-01-01",
+      "endPeriod": "2026-10-31"
+    }
+  ]
+}
+```
+
+#### 積立シミュレーション（過去実績）
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/investment/products/{id}/past-simulations |
+| HTTPメソッド | POST |
+| 概要 | 過去の指定した期間と積立投資額を入力すると、毎月の価額の変動と最終的な運用結果を取得する |
+
+> [!NOTE]
+> `{id}`の部分は、積立シミュレーションで選択できる指数・株価の`id`が入る。  
+> 先述の`/api/investment/products`にて得られるid情報を格納する
+
+※ リクエストの内容がやや長めなのでHTTPメソッドは`GET`ではなく`POST`を今回は使用。  
+またリクエスト内容に日本語が入るとクエリパラメータでエンコードが必要になりURLが分かりにくくなるのでそれを避ける目的もある。
+
+リクエスト例
+```JSON
+{
+  "startMonth": "2010-01",
+  "endMonth": "2010-02",
+  "monthlyAmount": 50000,
+  "currency": "JPY"
+}
+```
+
+レスポンス例（200 OK）
+```JSON
+{
+    "data": {
+        "conditions": {
+            "name": "sp500tr",
+            "startMonth": "2010-01-04",
+            "endMonth": "2010-02-01",
+            "monthlyAmount": 50000,
+            "contributionMonths": 2
+        },
+        "summary": {
+            "principal": 100000,
+            "assetValue": 96864,
+            "profit": -3136,
+            "currency": "JPY",
+            "returnRate": 0.96864
+        },
+        "chart": [
+            {
+                "month": "2010-01-04",
+                "principal": 50000,
+                "assetValue": 50000
+            },
+            {
+                "month": "2010-02-01",
+                "principal": 100000,
+                "assetValue": 96864
+            }
+        ]
+    }
 }
 ```
 
