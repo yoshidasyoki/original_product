@@ -16,6 +16,9 @@ class AuthController extends Controller
         if (!Auth::guard('web')->attempt($request->validated())) {
             return response()->json([
                 'message' => 'Invalid credentials.',
+                'errors' => [
+                    'auth' => ['ユーザーIDまたはパスワードが正しくありません。'],
+                ]
             ], 401);
         }
 
