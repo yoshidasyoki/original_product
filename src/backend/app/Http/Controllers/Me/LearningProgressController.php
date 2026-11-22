@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LearningProgress\UpdateOneRequest;
 use App\Http\Requests\LearningProgress\UpdateAllRequest;
-// use App\Http\Resources\Me\LearningProgress\LearningProgressResource;
 use App\Http\Resources\Me\LearningProgressResource;
 
 use App\Models\UserLearningProgress;
