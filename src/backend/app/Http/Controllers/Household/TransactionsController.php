@@ -17,6 +17,9 @@ use App\Models\HouseholdTransaction;
 
 class TransactionsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index(IndexRequest $request)
     {
         $month = $request->query('month') ?? now()->format('Y-m');
@@ -59,6 +62,9 @@ class TransactionsController extends Controller
         ]);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(SaveRequest $request): JsonResponse
     {
         $form = $request->validated();
@@ -77,6 +83,9 @@ class TransactionsController extends Controller
         ], 201);
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show(HouseholdTransaction $transaction): JsonResponse
     {
         Gate::authorize('view', $transaction);
@@ -85,6 +94,9 @@ class TransactionsController extends Controller
         ]);
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(SaveRequest $request, HouseholdTransaction $transaction): JsonResponse
     {
         $form = $request->validated();
@@ -103,6 +115,9 @@ class TransactionsController extends Controller
         ]);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(HouseholdTransaction $transaction): JsonResponse
     {
         Gate::authorize('delete', $transaction);

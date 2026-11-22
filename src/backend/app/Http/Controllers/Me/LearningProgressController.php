@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Me\LearningProgress;
+namespace App\Http\Controllers\Me;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,10 +11,9 @@ use App\Http\Requests\LearningProgress\UpdateOneRequest;
 use App\Http\Requests\LearningProgress\UpdateAllRequest;
 use App\Http\Resources\Me\LearningProgress\CurriculumsResource;
 
-use App\Models\Curriculum;
 use App\Models\UserLearningProgress;
 
-class CurriculumsController extends Controller
+class LearningProgressController extends Controller
 {
     public function index(Request $request): JsonResponse
     {

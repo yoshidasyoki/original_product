@@ -8,7 +8,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\Me\AccountsController;
-use App\Http\Controllers\Me\LearningProgress\CurriculumsController;
+use App\Http\Controllers\Me\LearningProgressController;
 use App\Http\Controllers\Household\CategoriesController;
 use App\Http\Controllers\Household\TransactionsController;
 use App\Http\Controllers\Investment\PastSimulationsController;
@@ -34,22 +34,20 @@ Route::put('/me/password', [AccountsController::class, 'updatePassword'])->middl
 Route::delete('/me', [AccountsController::class, 'destroy'])->middleware('auth:sanctum');
 
 // 家計簿機能
-Route::get('/household/transactions', [TransactionsController::class, 'index'])->middleware('auth:sanctum');
-Route::post('/household/transactions', [TransactionsController::class, 'store'])->middleware('auth:sanctum');
-Route::get('/household/transactions/{transaction}', [TransactionsController::class, 'show'])->middleware('auth:sanctum');
-Route::put('/household/transactions/{transaction}', [TransactionsController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('/household/transactions/{transaction}', [TransactionsController::class, 'destroy'])->middleware('auth:sanctum');
+Route::resource('/household/transactions', TransactionsController::class)
+    ->middleware('auth:sanctum');
 
 // 家計簿カテゴリ
 Route::get('/household/categories', [CategoriesController::class, 'index']);
 
 // 学習状況
-Route::get('/me/learning-progress/curriculums', [CurriculumsController::class, 'index'])->middleware('auth:sanctum');
-Route::put('/me/learning-progress/curriculums', [CurriculumsController::class, 'updateAll'])->middleware('auth:sanctum');
-Route::get('/me/learning-progress/curriculums/{id}', [CurriculumsController::class, 'show'])
-->middleware('auth:sanctum');
-Route::patch('/me/learning-progress/curriculums/{id}', [CurriculumsController::class, 'updateOne'])
-    ->whereNumber('id')
+Route::get('/me/learning-progress/curriculums', [LearningProgressController::class, 'index'])
+    ->middleware('auth:sanctum');
+Route::put('/me/learning-progress/curriculums', [LearningProgressController::class, 'updateAll'])
+    ->middleware('auth:sanctum');
+Route::get('/me/learning-progress/curriculums/{id}', [LearningProgressController::class, 'show'])
+    ->middleware('auth:sanctum');
+Route::patch('/me/learning-progress/curriculums/{id}', [LearningProgressController::class, 'updateOne'])
     ->middleware('auth:sanctum');
 
 // 積立シミュレーション（過去実績）
