@@ -521,7 +521,7 @@ AWSインフラ設計について以下の構成を想定
 リクエスト例：  
 ```JSON
 {
-  "status" "completed"
+  "status": "completed"
 }
 ```
 
