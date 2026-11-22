@@ -203,8 +203,9 @@ AWSインフラ設計について以下の構成を想定
 | [ユーザ情報変更](#ユーザ情報変更) | /api/me | PATCH  | ログインユーザの名前とメールアドレスを変更する |
 | [パスワード変更](#パスワード変更) | /api/me/password | PUT | ログインユーザのパスワードを変更する |
 | [ユーザ退会](#ユーザ退会) | /api/me | DELETE | ユーザの退会（アカウント情報の削除）を行う |
-| [学習状況取得](#学習状況取得) | /api/me/learning-progress/curriculums | GET | ログインユーザの学習の進捗状況を取得する |
+| [学習状況一括取得](#学習状況一括取得) | /api/me/learning-progress/curriculums | GET | ログインユーザの学習の進捗状況を一括で取得する |
 | [学習状況一括編集](#学習状況一括編集) | /api/me/learning-progress/curriculums | PUT | ログインユーザの学習進捗の編集を一括で行う |
+| [学習状況部分取得](#学習状況部分取得) | /api/me/learning-progress/curriculums/{id} | GET | ログインユーザの特定のカリキュラムの進捗状況を取得する |
 | [学習状況部分編集](#学習状況部分編集) | /api/me/learning-progress/curriculums/{id} | PATCH | ログインユーザの特定のカリキュラムの進捗状況を編集する |
 
 ### 家計簿
@@ -394,7 +395,7 @@ AWSインフラ設計について以下の構成を想定
 
 ※ 処理に成功した場合はステータスコード`204 No Content`を返す
 
-#### 学習状況取得
+#### 学習状況一括取得
 | 項目 | 内容 |
 | ---- | ---- |
 | URLパス | /api/me/learning-progress/curriculums |
@@ -489,6 +490,24 @@ AWSインフラ設計について以下の構成を想定
       "status": "completed"
     }
   ]
+}
+```
+
+#### 学習状況部分取得
+| 項目 | 内容 |
+| ---- | ---- |
+| URLパス | /api/me/learning-progress/curriculums/{id} |
+| HTTPメソッド | GET |
+| 概要 | 特定カリキュラムの学習ステータスを取得する | 
+
+レスポンス例：（200 OK）
+```JSON
+{
+  "data": {
+    "id": 3,
+    "title": "投資シミュレーション",
+    "status": "completed"
+  }
 }
 ```
 
