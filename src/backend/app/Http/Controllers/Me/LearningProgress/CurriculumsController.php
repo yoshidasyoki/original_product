@@ -81,4 +81,17 @@ class CurriculumsController extends Controller
             'data' => new CurriculumsResource($target),
         ]);
     }
+
+    public function show(Request $request, int $id): JsonResponse
+    {
+        $userId = $request->user()->id;
+        $target = UserLearningProgress::query()
+            ->where('user_id', $userId)
+            ->where('curriculum_id', $id)
+            ->firstOrFail();
+
+        return response()->json([
+            'data' => new CurriculumsResource($target),
+        ]);
+    }
 }

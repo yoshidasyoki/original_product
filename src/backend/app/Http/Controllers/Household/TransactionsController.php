@@ -6,6 +6,7 @@ use Carbon\Carbon;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Household\Transactions\IndexRequest;
@@ -78,6 +79,7 @@ class TransactionsController extends Controller
 
     public function show(HouseholdTransaction $transaction): JsonResponse
     {
+        Gate::authorize('view', $transaction);
         return response()->json([
             'data' => new TransactionResource($transaction),
         ]);
@@ -86,6 +88,7 @@ class TransactionsController extends Controller
     public function update(SaveRequest $request, HouseholdTransaction $transaction): JsonResponse
     {
         $form = $request->validated();
+        Gate::authorize('update', $transaction);
 
         $transaction->update([
             'household_category_id' => $form['categoryId'],
@@ -102,6 +105,7 @@ class TransactionsController extends Controller
 
     public function destroy(HouseholdTransaction $transaction): JsonResponse
     {
+        Gate::authorize('delete', $transaction);
         $transaction->delete();
 
         return response()->json([

@@ -46,6 +46,8 @@ Route::get('/household/categories', [CategoriesController::class, 'index']);
 // 学習状況
 Route::get('/me/learning-progress/curriculums', [CurriculumsController::class, 'index'])->middleware('auth:sanctum');
 Route::put('/me/learning-progress/curriculums', [CurriculumsController::class, 'updateAll'])->middleware('auth:sanctum');
+Route::get('/me/learning-progress/curriculums/{id}', [CurriculumsController::class, 'show'])
+->middleware('auth:sanctum');
 Route::patch('/me/learning-progress/curriculums/{id}', [CurriculumsController::class, 'updateOne'])
     ->whereNumber('id')
     ->middleware('auth:sanctum');
