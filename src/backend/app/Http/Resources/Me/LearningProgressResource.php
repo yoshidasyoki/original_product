@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Me\LearningProgress;
+namespace App\Http\Resources\Me;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CurriculumsResource extends JsonResource
+class LearningProgressResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LearningProgress\UpdateOneRequest;
 use App\Http\Requests\LearningProgress\UpdateAllRequest;
-use App\Http\Resources\Me\LearningProgress\CurriculumsResource;
+// use App\Http\Resources\Me\LearningProgress\LearningProgressResource;
+use App\Http\Resources\Me\LearningProgressResource;
 
 use App\Models\UserLearningProgress;
 
@@ -23,7 +24,7 @@ class LearningProgressController extends Controller
             ->get();
 
         return response()->json([
-            'data' => CurriculumsResource::collection($result),
+            'data' => LearningProgressResource::collection($result),
         ]);
     }
 
@@ -54,7 +55,7 @@ class LearningProgressController extends Controller
 
         return response()->json([
             'message' => 'Learning status updated successfully.',
-            'data' => CurriculumsResource::collection($result),
+            'data' => LearningProgressResource::collection($result),
         ]);
     }
 
@@ -77,7 +78,7 @@ class LearningProgressController extends Controller
 
         return response()->json([
             'message' => 'Learning status updated successfully.',
-            'data' => new CurriculumsResource($target),
+            'data' => new LearningProgressResource($target),
         ]);
     }
 
@@ -90,7 +91,7 @@ class LearningProgressController extends Controller
             ->firstOrFail();
 
         return response()->json([
-            'data' => new CurriculumsResource($target),
+            'data' => new LearningProgressResource($target),
         ]);
     }
 }
