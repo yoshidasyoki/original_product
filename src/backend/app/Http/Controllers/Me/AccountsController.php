@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateInfoRequest;
 use App\Http\Requests\User\UpdatePasswordRequest;
+use App\Http\Resources\UserResource;
 
 class AccountsController extends Controller
 {
@@ -17,11 +18,7 @@ class AccountsController extends Controller
     {
         $user = $request->user();
         return response()->json([
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-            ],
+            'data' => new UserResource($user),
         ]);
     }
 
@@ -47,11 +44,7 @@ class AccountsController extends Controller
 
         return response()->json([
             'message' => 'User personal info updated successfully.',
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-            ],
+            'data' => new UserResource($user),
         ], 200);
     }
 

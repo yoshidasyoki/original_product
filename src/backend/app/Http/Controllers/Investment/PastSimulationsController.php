@@ -13,7 +13,7 @@ use App\Models\ExchangeRate;
 
 class PastSimulationsController extends Controller
 {
-    public function store(StoreRequest $request, InvestmentProduct $product)
+    public function simulate(StoreRequest $request, InvestmentProduct $product)
     {
         $form = $request->validated();
 
@@ -30,7 +30,7 @@ class PastSimulationsController extends Controller
             $pastPrices = $this->convertRate($pastPrices, $exchangeRates);
         }
 
-        $result = $this->simulate($pastPrices, (int) $form['monthlyAmount']);
+        $result = $this->calcSimulate($pastPrices, (int) $form['monthlyAmount']);
 
         $totalPrincipal = end($result)['principal'];
         $totalAssetValue = end($result)['assetValue'];
@@ -168,8 +168,8 @@ class PastSimulationsController extends Controller
         return $convertedPrices;
     }
 
-    // シミュレーション処理
-    private function simulate(array $pastPrices, int $monthlyAmount)
+    // シミュレーションの演算処理
+    private function calcSimulate(array $pastPrices, int $monthlyAmount)
     {
         $result = [];
 
