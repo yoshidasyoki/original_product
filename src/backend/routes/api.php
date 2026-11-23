@@ -18,38 +18,54 @@ use App\Http\Controllers\Investment\ProductsController;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
+// ヘルスチェック
 Route::get('/health', function () {
     return response()->json(['status' => 'OK'], 200);
 });
 
-// ログイン認証
-Route::post('/login', [AuthController::class, 'login'])->middleware('guest:web');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+// ---- ゲスト専用 ----
+Route::middleware('guest:web')->group(function () {
+    // ログイン認証
+    Route::post('/login', [AuthController::class, 'login'])
+        ->middleware('throttle:login');
 
-// アカウント関連
-Route::post('/users', [UsersController::class, 'store'])->middleware('guest:web');
-Route::get('/me', [AccountsController::class, 'index'])->middleware('auth:sanctum');
-Route::patch('/me', [AccountsController::class, 'update'])->middleware('auth:sanctum');
-Route::put('/me/password', [AccountsController::class, 'updatePassword'])->middleware('auth:sanctum');
-Route::delete('/me', [AccountsController::class, 'destroy'])->middleware('auth:sanctum');
+    // ユーザー登録
+    Route::post('/users', [UsersController::class, 'store'])
+        ->middleware('throttle:account-register');
+});
 
-// 家計簿機能
-Route::resource('/household/transactions', TransactionsController::class)
-    ->middleware('auth:sanctum');
+// ---- 認証が必要な処理 ----
+Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
+    // ログアウト
+    Route::post('/logout', [AuthController::class, 'logout']);
 
+    // アカウント関連
+    Route::controller(AccountsController::class)->group(function () {
+        Route::get('/me', 'index');
+        Route::patch('/me', 'update');
+        Route::put('/me/password', 'updatePassword');
+        Route::delete('/me', 'destroy');
+    });
+
+    // 家計簿機能
+    Route::apiResource('/household/transactions', TransactionsController::class);
+
+    // 学習状況
+    Route::controller(LearningProgressController::class)->group(function () {
+        Route::get('/me/learning-progress/curriculums', 'index');
+        Route::put('/me/learning-progress/curriculums', 'updateAll');
+        Route::get('/me/learning-progress/curriculums/{id}', 'show');
+        Route::patch('/me/learning-progress/curriculums/{id}', 'updateOne');
+    });
+});
+
+// ---- 認証状態に関わらず実行可能な処理 ----
 // 家計簿カテゴリ
-Route::get('/household/categories', [CategoriesController::class, 'index']);
-
-// 学習状況
-Route::get('/me/learning-progress/curriculums', [LearningProgressController::class, 'index'])
-    ->middleware('auth:sanctum');
-Route::put('/me/learning-progress/curriculums', [LearningProgressController::class, 'updateAll'])
-    ->middleware('auth:sanctum');
-Route::get('/me/learning-progress/curriculums/{id}', [LearningProgressController::class, 'show'])
-    ->middleware('auth:sanctum');
-Route::patch('/me/learning-progress/curriculums/{id}', [LearningProgressController::class, 'updateOne'])
-    ->middleware('auth:sanctum');
+Route::get('/household/categories', [CategoriesController::class, 'index'])
+    ->middleware('throttle:api');
 
 // 積立シミュレーション（過去実績）
-Route::post('/investment/products/{product}/past-simulations/', [PastSimulationsController::class, 'simulate']);
-Route::get('/investment/products', [ProductsController::class, 'index']);
+Route::post('/investment/products/{product}/past-simulations/', [PastSimulationsController::class, 'simulate'])
+    ->middleware('throttle:simulate');
+Route::get('/investment/products', [ProductsController::class, 'index'])
+    ->middleware('throttle:api');
