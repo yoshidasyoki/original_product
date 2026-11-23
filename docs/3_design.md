@@ -921,6 +921,7 @@ AWSインフラ設計について以下の構成を想定
 [BelleClub](https://www.belleclub.jp/)  
 [pal-system](https://www.pal-system.co.jp/koeteku/okome/)  
 [ソコスト](https://soco-st.com/category/money) 
+[unDraw](https://undraw.co/illustrations)
 
 ## 6. その他
 ### 積立シミュレーション（過去実績）について
